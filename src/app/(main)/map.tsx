@@ -5,13 +5,11 @@ import { MarkerBottomSheet } from '@/src/features/marker-details/components/Mark
 import { ReportFormBottomSheet } from '@/src/features/report-creation/components/ReportFormBottomSheet';
 import { ReportSuccessNotice } from '@/src/features/report-creation/components/ReportSuccessNotice';
 import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
-import { useAuthStore } from '@/src/shared/stores/auth.store';
 import { StyleSheet, View } from 'react-native';
 
 export default function MapScreen() {
   const tabBarHeight = useBottomTabBarHeight();
   const { data: markersData, refetch: refetchMarkers } = useMarkersQuery();
-  const currentUser = useAuthStore((state) => state.user);
 
   const {
     selectedPoint,
@@ -56,7 +54,6 @@ export default function MapScreen() {
       <MarkerBottomSheet
         visible={!!selectedMarker}
         marker={selectedMarker}
-        currentUserId={currentUser?.id}
         isJoined={false}
         onClose={handleCloseMarkerSheet}
       />

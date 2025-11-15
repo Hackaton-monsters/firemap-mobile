@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 type User = {
-  id: string;
+  id: number;
   email: string;
   nickname: string;
   role: 'user' | 'gov';

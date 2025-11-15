@@ -10,7 +10,6 @@ import { MarkerContent } from './MarkerContent';
 type IProps = {
   visible: boolean;
   marker: Marker | null;
-  currentUserId?: string;
   isJoined?: boolean;
   onClose: () => void;
 };
@@ -18,7 +17,6 @@ type IProps = {
 export const MarkerBottomSheet = ({
   visible,
   marker,
-  currentUserId,
   isJoined = false,
   onClose,
 }: IProps) => {
@@ -51,7 +49,6 @@ export const MarkerBottomSheet = ({
         {visible && marker && (
           <MarkerContent
             marker={marker}
-            currentUserId={currentUserId}
             isJoined={joined}
             onJoinSuccess={handleJoinSuccess}
           />

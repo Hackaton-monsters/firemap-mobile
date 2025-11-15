@@ -11,25 +11,25 @@ const formatTime = (dateString: string): string => {
 
 type IProps = {
   messages: ChatMessage[];
-  currentUserId?: string;
+  currentUserId?: number;
 };
 
 export const ChatMessageList = ({ messages, currentUserId }: IProps) => {
   const renderMessage = ({ item }: { item: ChatMessage }) => {
-    const isOwnMessage = currentUserId === item.userId;
-    
+    const isOwnMessage = currentUserId === item.user.id;
+
     return (
       <View style={[styles.messageContainer, isOwnMessage && styles.ownMessageContainer]}>
         {!isOwnMessage && (
-          <Text style={styles.username}>{item.username}</Text>
+          <Text style={styles.username}>{item.user.nickname}</Text>
         )}
         <View style={[styles.messageBubble, isOwnMessage && styles.ownMessageBubble]}>
           <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>
-            {item.message}
+            {item.text}
           </Text>
-          <Text style={[styles.timestamp, isOwnMessage && styles.ownTimestamp]}>
+          {item.createdAt && <Text style={[styles.timestamp, isOwnMessage && styles.ownTimestamp]}>
             {formatTime(item.createdAt)}
-          </Text>
+          </Text>}
         </View>
       </View>
     );

@@ -2,23 +2,27 @@ import { useChatHistoryQuery } from '@/src/api/chat/hooks';
 import type { ChatMessage } from '@/src/api/chat/types';
 import { Colors } from '@/src/shared/constants/colors';
 import { chatWebSocketService, useChatWebSocket } from '@/src/shared/services/chat-websocket.service';
+import { useAuthStore } from '@/src/shared/stores/auth.store';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ChatInput } from './ChatInput';
 import { ChatMessageList } from './ChatMessageList';
+import ChatSkeleton from './ChatSkeleton';
 import { JoinChatButton } from './JoinChatButton';
 
 type IProps = {
   chatId: number;
-  currentUserId?: string;
   isJoined: boolean;
   onJoinSuccess: () => void;
 };
 
-export const ChatView = ({ chatId, currentUserId, isJoined, onJoinSuccess }: IProps) => {
+export const ChatView = ({ chatId, isJoined, onJoinSuccess }: IProps) => {
+  const currentUser = useAuthStore((state) => state.user);
   const { data, isLoading, refetch } = useChatHistoryQuery(chatId, true);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const { connect, disconnect } = useChatWebSocket();
+
+  console.log({ data })
 
   useEffect(() => {
     if (data?.messages) {
@@ -44,11 +48,7 @@ export const ChatView = ({ chatId, currentUserId, isJoined, onJoinSuccess }: IPr
   };
 
   if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+    return <ChatSkeleton />;
   }
 
   return (
@@ -59,10 +59,10 @@ export const ChatView = ({ chatId, currentUserId, isJoined, onJoinSuccess }: IPr
             <Text style={styles.emptyText}>No messages yet</Text>
           </View>
         ) : (
-          <ChatMessageList messages={messages} currentUserId={currentUserId} />
+          <ChatMessageList messages={messages} currentUserId={currentUser?.id} />
         )}
       </View>
-      
+
       {isJoined ? (
         <ChatInput chatId={chatId} onMessageSent={handleMessageSent} />
       ) : (

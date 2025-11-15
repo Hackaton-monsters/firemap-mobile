@@ -1,13 +1,29 @@
+export type ChatUser = {
+  id: number;
+  nickname: string;
+  email: string;
+  role: 'user' | 'government';
+};
+
 export type ChatMessage = {
   id: number;
-  chatId: number;
-  userId: string;
-  username: string;
-  message: string;
+  text: string;
+  user: ChatUser;
   createdAt: string;
 };
 
 export type ChatHistoryResponse = {
+  id: number;
+  marker: {
+    id: number;
+    chatId: number;
+    lat: number;
+    lon: number;
+    reports: null;
+    reportsCount: number;
+    type: 'fire' | 'rescue';
+    title: string;
+  };
   messages: ChatMessage[];
 };
 
