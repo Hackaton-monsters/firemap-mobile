@@ -1,12 +1,7 @@
 export type Report = {
   id: number;
-  lat: number;
-  lon: number;
-  type: string;
-  comment?: string;
-  photos?: string[];
-  createdAt: string;
-  userId: number;
+  comment: string;
+  photos: number[] | null;
 };
 
 export type Marker = {
@@ -15,7 +10,7 @@ export type Marker = {
   lon: number;
   reports: Report[];
   reportsCount: number;
-  type: string;
+  type: "fire" | "rescue";
   title: string;
   chatId: number;
 };
@@ -23,9 +18,9 @@ export type Marker = {
 export type MarkerPayload = {
   lat: number;
   lon: number;
-  type: string;
+  type: "fire" | "rescue";
   comment?: string;
-  photos?: string[];
+  photos?: string[]; // Array of images IDs
 };
 
 export type MarkerResponse = {
@@ -35,4 +30,9 @@ export type MarkerResponse = {
 
 export type MarkersResponse = {
   markers: Marker[];
+};
+
+export type PhotoUploadResponse = {
+  id: string;
+  url: string;
 };

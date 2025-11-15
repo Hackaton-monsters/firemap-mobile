@@ -1,12 +1,12 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useAuthStore } from '../../shared/stores/auth.store';
-import { apiClient } from '../client';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "../../shared/stores/auth.store";
+import { apiClient } from "../client";
 
 type User = {
   id: string;
   email: string;
   nickname: string;
-  role: 'user' | 'gov';
+  role: "user" | "gov";
 };
 
 type LoginPayload = {
@@ -37,8 +37,8 @@ export const useLoginMutation = () => {
 
   return useMutation<LoginResponse, Error, LoginPayload>({
     mutationFn: async (payload) => {
-      return apiClient<LoginResponse>('/login', {
-        method: 'POST',
+      return apiClient<LoginResponse>("/login", {
+        method: "POST",
         body: JSON.stringify(payload),
       });
     },
@@ -53,8 +53,8 @@ export const useRegisterMutation = () => {
 
   return useMutation<RegisterResponse, Error, RegisterPayload>({
     mutationFn: async (payload) => {
-      return apiClient<RegisterResponse>('/register', {
-        method: 'POST',
+      return apiClient<RegisterResponse>("/register", {
+        method: "POST",
         body: JSON.stringify(payload),
       });
     },
@@ -67,15 +67,40 @@ export const useRegisterMutation = () => {
 export const useMeQuery = () => {
   const token = useAuthStore((state) => state.token);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   return useQuery<MeResponse, Error>({
-    queryKey: ['me'],
+    queryKey: ["me"],
     queryFn: async () => {
-      return apiClient<MeResponse>('/auth/me', {
-        method: 'GET',
-        token,
-      });
+      try {
+        const data = await apiClient<MeResponse>("/auth/me", {
+          method: "GET",
+          token,
+        });
+
+        // Update user data on successful fetch
+        if (token) {
+          setAuth(token, data);
+        }
+
+        return data;
+      } catch (error) {
+        // If we get an auth error (not a network error), clear the auth state
+        if (
+          error instanceof Error &&
+          error.message &&
+          !error.message.toLowerCase().includes("network") &&
+          !error.message.toLowerCase().includes("fetch")
+        ) {
+          clearAuth();
+        }
+        throw error;
+      }
     },
     enabled: isAuthenticated && !!token,
+    retry: false,
+    staleTime: 0,
+    refetchOnMount: true,
   });
 };

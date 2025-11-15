@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Animated, StyleSheet, View } from 'react-native';
+import { Colors } from '../../../shared/constants/colors';
 import Button from '../../../shared/uikit/Button/Button';
 
 type IProps = {
@@ -72,6 +73,7 @@ export const AddMarkerButton = ({ onAddPress, onCancelPress, visible }: IProps) 
           onPress={onAddPress}
           variant="primary"
           style={styles.addButton}
+          rootStyle={styles.addButtonRoot}
         />
       </View>
     </Animated.View>
@@ -84,8 +86,8 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
     bottom: 16,
-    zIndex: 100,
-    shadowColor: '#000',
+    zIndex: 0,
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -94,15 +96,17 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     gap: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.white,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 16,
   },
   cancelButton: {
-    flex: 1,
   },
   addButton: {
-    flex: 2,
+    flex: 1,
+  },
+  addButtonRoot: {
+    flex: 1,
   },
 });

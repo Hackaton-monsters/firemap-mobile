@@ -94,6 +94,18 @@ export default {
       addPhoto: 'Add Photo',
       photoPermissionTitle: 'Permission Required',
       photoPermissionMessage: 'Please grant access to your photo library to attach images.',
+      confirmClose: {
+        title: 'Discard Report?',
+        message: 'You have unsaved changes. Are you sure you want to discard this report?',
+        confirm: 'Discard',
+      },
+      success: {
+        newMarkerTitle: 'Report Created',
+        newMarkerMessage: 'Your incident report has been successfully created and is now visible on the map.',
+        mergedTitle: 'Report Added',
+        mergedMessage: 'Your report has been added to an existing nearby incident.',
+        openReport: 'View Report',
+      },
     },
   },
 };

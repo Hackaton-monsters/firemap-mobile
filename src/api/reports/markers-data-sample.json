@@ -1,0 +1,278 @@
+{
+  "markers": [
+    {
+      "id": 1,
+      "chatId": 1,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 1, "comment": "test", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 2,
+      "chatId": 2,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 2, "comment": "test", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 3,
+      "chatId": 3,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 3, "comment": "test", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 4,
+      "chatId": 4,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 4, "comment": "test", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 5,
+      "chatId": 5,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 5, "comment": "test", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 6,
+      "chatId": 6,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 6, "comment": "tllll", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 7,
+      "chatId": 7,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 7, "comment": "tllll", "photos": [1, 2] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 8,
+      "chatId": 8,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 8, "comment": "tllll", "photos": [] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 9,
+      "chatId": 9,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 9, "comment": "tllll", "photos": null }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 10,
+      "chatId": 10,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 10, "comment": "", "photos": null }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 11,
+      "chatId": 11,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 11, "comment": "tllll", "photos": null }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 12,
+      "chatId": 12,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 12, "comment": "tllll", "photos": [] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 13,
+      "chatId": 13,
+      "lat": 34.7,
+      "lon": 33.026,
+      "reports": [{ "id": 13, "comment": "tllll", "photos": [] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 14,
+      "chatId": 14,
+      "lat": 35.7,
+      "lon": 33.026,
+      "reports": [{ "id": 14, "comment": "tllll", "photos": [] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 15,
+      "chatId": 15,
+      "lat": 34.663827,
+      "lon": 33.027077,
+      "reports": [],
+      "reportsCount": 0,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 16,
+      "chatId": 16,
+      "lat": 34.663827,
+      "lon": 33.027077,
+      "reports": [],
+      "reportsCount": 0,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 17,
+      "chatId": 17,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [],
+      "reportsCount": 0,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 18,
+      "chatId": 18,
+      "lat": 34.663827,
+      "lon": 33.027077,
+      "reports": [
+        { "id": 15, "comment": "HERE IS PEOPLE GET FUCKED :(", "photos": [] }
+      ],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 19,
+      "chatId": 19,
+      "lat": 34.664575,
+      "lon": 33.026147,
+      "reports": [
+        {
+          "id": 16,
+          "comment": "Here I have the first sex with ladies",
+          "photos": []
+        }
+      ],
+      "reportsCount": 1,
+      "type": "rescue",
+      "title": "test"
+    },
+    {
+      "id": 20,
+      "chatId": 20,
+      "lat": 34.662298,
+      "lon": 33.025768,
+      "reports": [{ "id": 17, "comment": "Moms spaghetti", "photos": [] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 21,
+      "chatId": 21,
+      "lat": 34.667006,
+      "lon": 33.0272,
+      "reports": [
+        {
+          "id": 18,
+          "comment": "WOOOW!!!!\\n\\nTHERE IS FREE SUVLAKAS!!! MALAKAAS!!!",
+          "photos": []
+        }
+      ],
+      "reportsCount": 1,
+      "type": "rescue",
+      "title": "test"
+    },
+    {
+      "id": 22,
+      "chatId": 22,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [],
+      "reportsCount": 0,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 23,
+      "chatId": 23,
+      "lat": 34.663827,
+      "lon": 33.027077,
+      "reports": [{ "id": 19, "comment": "ТУТ ЛЮДЕЙ ЕБУТ!!!!", "photos": [] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 24,
+      "chatId": 24,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 20, "comment": "фывфывв", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 25,
+      "chatId": 25,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 21, "comment": "фывфывв", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    },
+    {
+      "id": 26,
+      "chatId": 26,
+      "lat": 34.707123,
+      "lon": 33.022456,
+      "reports": [{ "id": 22, "comment": "фывфывв", "photos": [1, 2, 5] }],
+      "reportsCount": 1,
+      "type": "fire",
+      "title": "test"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { MarkerView } from '@maplibre/maplibre-react-native';
 import { useEffect, useRef } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native';
+import { Colors } from '../../../shared/constants/colors';
 
 type IProps = {
   longitude: number;
@@ -107,18 +108,18 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FF6B6B',
+    backgroundColor: Colors.mapPulse,
   },
   marker: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#FF6B6B',
+    backgroundColor: Colors.mapMarkerFire,
     borderWidth: 3,
-    borderColor: '#FFFFFF',
+    borderColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
@@ -128,6 +129,6 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.white,
   },
 });

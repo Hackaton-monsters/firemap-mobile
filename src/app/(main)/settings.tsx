@@ -1,3 +1,4 @@
+import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
 import { useAuthStore } from '@/src/shared/stores/auth.store';
 import Button from '@/src/shared/uikit/Button/Button';
 import { useRouter } from 'expo-router';
@@ -10,6 +11,7 @@ export default function SettingsScreen() {
   const user = useAuthStore((state) => state.user);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const router = useRouter();
+  const tabBarHeight = useBottomTabBarHeight();
 
   const handleLogout = () => {
     clearAuth();
@@ -17,7 +19,10 @@ export default function SettingsScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={[styles.content, { paddingBottom: tabBarHeight }]}
+    >
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('settings.profile.title')}</Text>
         

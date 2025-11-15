@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   ActivityIndicator,
+  Animated,
   StyleSheet,
   Text,
   TextStyle,
@@ -8,6 +9,7 @@ import {
   TouchableOpacityProps,
   ViewStyle,
 } from 'react-native';
+import { Colors } from '../../constants/colors';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger';
 
@@ -16,6 +18,7 @@ type IProps = TouchableOpacityProps & {
   variant?: ButtonVariant;
   isLoading?: boolean;
   style?: ViewStyle;
+  rootStyle?: ViewStyle;
   textStyle?: TextStyle;
 };
 
@@ -26,8 +29,29 @@ const Button = ({
   style,
   textStyle,
   disabled,
+  rootStyle,
   ...props
 }: IProps) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 0.96,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      damping: 15,
+      stiffness: 300,
+      mass: 0.5,
+      useNativeDriver: true,
+    }).start();
+  };
+
   const buttonStyle = [
     styles.button,
     styles[variant],
@@ -37,17 +61,28 @@ const Button = ({
 
   const buttonTextStyle = [styles.buttonText, styles[`${variant}Text`], textStyle];
 
+  const getActivityIndicatorColor = () => {
+    if (variant === 'primary') return Colors.white;
+    if (variant === 'danger') return Colors.white;
+    return Colors.info;
+  };
+
   return (
     <TouchableOpacity
-      style={buttonStyle}
+      activeOpacity={1}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       disabled={disabled || isLoading}
+      style={rootStyle}
       {...props}
     >
-      {isLoading ? (
-        <ActivityIndicator color={variant === 'primary' ? '#fff' : '#007AFF'} />
-      ) : (
-        <Text style={buttonTextStyle}>{title}</Text>
-      )}
+      <Animated.View style={[buttonStyle, { transform: [{ scale: scaleAnim }] }]}>
+        {isLoading ? (
+          <ActivityIndicator color={getActivityIndicatorColor()} />
+        ) : (
+          <Text style={buttonTextStyle}>{title}</Text>
+        )}
+      </Animated.View>
     </TouchableOpacity>
   );
 };
@@ -58,18 +93,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 5,
   },
   primary: {
-    backgroundColor: '#007AFF',
+    backgroundColor: Colors.buttonPrimary,
   },
   secondary: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.white,
     borderWidth: 1,
-    borderColor: '#007AFF',
+    borderColor: Colors.info,
   },
   danger: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: Colors.buttonDanger,
   },
   disabled: {
     opacity: 0.6,
@@ -79,13 +113,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   primaryText: {
-    color: '#fff',
+    color: Colors.white,
   },
   secondaryText: {
-    color: '#007AFF',
+    color: Colors.info,
   },
   dangerText: {
-    color: '#fff',
+    color: Colors.white,
   },
 });
 

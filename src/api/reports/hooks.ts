@@ -1,34 +1,83 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { apiClient } from '../client';
-import type { Marker, MarkerPayload, MarkerResponse, MarkersResponse } from './types';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "../../shared/stores/auth.store";
+import { apiClient } from "../client";
+import type {
+  Marker,
+  MarkerPayload,
+  MarkerResponse,
+  MarkersResponse,
+  PhotoUploadResponse,
+} from "./types";
 
-export const useMarkersQuery = () =>
-  useQuery<MarkersResponse>({
-    queryKey: ['markers'],
+export const useMarkersQuery = () => {
+  const token = useAuthStore((state) => state.token);
+
+  return useQuery<MarkersResponse>({
+    queryKey: ["markers"],
     queryFn: async () => {
-      const token = null; // TODO: Get token from auth store
-      return apiClient<MarkersResponse>('/markers', { token });
+      return apiClient<MarkersResponse>("/marker/all", { token });
     },
   });
+};
 
-export const useCreateMarkerMutation = () =>
-  useMutation<MarkerResponse, Error, MarkerPayload>({
+export const useCreateMarkerMutation = () => {
+  const token = useAuthStore((state) => state.token);
+
+  return useMutation<MarkerResponse, Error, MarkerPayload>({
     mutationFn: async (payload) => {
-      const token = null; // TODO: Get token from auth store
-      return apiClient<MarkerResponse>('/markers', {
-        method: 'POST',
+      return apiClient<MarkerResponse>("/marker", {
+        method: "POST",
         body: JSON.stringify(payload),
         token,
       });
     },
   });
+};
 
-export const useMarkerByIdQuery = (id: number, enabled: boolean = true) =>
-  useQuery<Marker>({
-    queryKey: ['marker', id],
+export const useMarkerByIdQuery = (id: number, enabled: boolean = true) => {
+  const token = useAuthStore((state) => state.token);
+
+  return useQuery<Marker>({
+    queryKey: ["marker", id],
     queryFn: async () => {
-      const token = null; // TODO: Get token from auth store
       return apiClient<Marker>(`/markers/${id}`, { token });
     },
     enabled,
   });
+};
+
+export const useUploadPhotoMutation = () => {
+  const token = useAuthStore((state) => state.token);
+
+  return useMutation<
+    PhotoUploadResponse,
+    Error,
+    { uri: string; name: string; type: string }
+  >({
+    mutationFn: async ({ uri, name, type }) => {
+      const formData = new FormData();
+      formData.append("photo", {
+        uri,
+        name,
+        type,
+      } as any);
+
+      const response = await fetch("http://5.75.233.110/api/photos", {
+        method: "POST",
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({
+          message: "Failed to upload photo",
+        }));
+        throw new Error(error.message || `HTTP ${response.status}`);
+      }
+
+      return response.json();
+    },
+  });
+};

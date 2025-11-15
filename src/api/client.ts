@@ -28,7 +28,10 @@ export const apiClient = async <T>(
     const error = await response.json().catch(() => ({
       message: "An error occurred",
     }));
-    throw new Error(error.message || `HTTP ${response.status}`);
+
+    throw new Error(error.message || `HTTP ${response.status}`, {
+      cause: error,
+    });
   }
 
   return response.json();

@@ -1,6 +1,9 @@
+import { MaterialIcons } from '@expo/vector-icons';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Colors } from '../../../shared/constants/colors';
 
 export const OutsideCyprusBanner = () => {
   const { t } = useTranslation();
@@ -8,7 +11,7 @@ export const OutsideCyprusBanner = () => {
 
   return (
     <View style={[styles.banner, { top: insets.top + 16 }]}>
-      <Text style={styles.icon}>⚠️</Text>
+      <MaterialIcons name="warning" size={24} color={Colors.warningDark} style={styles.icon} />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{t('map.locationNotice.title')}</Text>
         <Text style={styles.text}>{t('map.locationNotice.message')}</Text>
@@ -20,38 +23,36 @@ export const OutsideCyprusBanner = () => {
 const styles = StyleSheet.create({
   banner: {
     position: 'absolute',
-    top: 16,
     left: 16,
     right: 16,
-    backgroundColor: '#fff3cd',
-    padding: 16,
+    backgroundColor: Colors.warningLight,
+    padding: 15,
     borderRadius: 12,
     borderLeftWidth: 4,
-    borderLeftColor: '#ffc107',
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
+    borderLeftColor: Colors.warning,
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   icon: {
-    fontSize: 24,
-    marginRight: 12,
+    marginRight: 10,
   },
   textContainer: {
     flex: 1,
   },
   title: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#856404',
+    color: Colors.warningDark,
     marginBottom: 4,
   },
   text: {
-    fontSize: 13,
-    color: '#856404',
-    lineHeight: 18,
+    fontSize: 14,
+    color: Colors.warningDark,
+    lineHeight: 20,
   },
 });

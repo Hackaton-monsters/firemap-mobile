@@ -1,5 +1,7 @@
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Colors } from '../../../shared/constants/colors';
 
 type IProps = {
   onPress: () => void;
@@ -8,6 +10,7 @@ type IProps = {
 
 export const CenterLocationButton = ({ onPress, bottomOffset = 0 }: IProps) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(1)).current;
   const previousOffset = useRef(0);
 
   useEffect(() => {
@@ -23,25 +26,50 @@ export const CenterLocationButton = ({ onPress, bottomOffset = 0 }: IProps) => {
     }
   }, [bottomOffset, slideAnim]);
 
+  const handlePressIn = () => {
+    Animated.timing(scaleAnim, {
+      toValue: 0.92,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      damping: 15,
+      stiffness: 300,
+      mass: 0.5,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <Animated.View
       style={[
         styles.button,
         {
-          transform: [{ translateY: slideAnim.interpolate({
-            inputRange: [0, 80],
-            outputRange: [0, -80],
-          }) }],
+          transform: [
+            {
+              translateY: slideAnim.interpolate({
+                inputRange: [0, 80],
+                outputRange: [0, -80],
+              })
+            },
+            { scale: scaleAnim },
+          ],
         },
       ]}
     >
       <TouchableOpacity
         onPress={onPress}
-        activeOpacity={0.8}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={1}
         style={styles.touchable}
       >
         <View style={styles.inner}>
-          <Text style={styles.icon}>📍</Text>
+          <MaterialCommunityIcons name="target" size={24} color={Colors.mapCenterOnUser}  />
         </View>
       </TouchableOpacity>
     </Animated.View>
@@ -53,9 +81,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 16,
     bottom: 24,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     borderRadius: 30,
-    shadowColor: '#000',
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,

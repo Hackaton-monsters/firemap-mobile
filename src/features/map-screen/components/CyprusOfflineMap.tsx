@@ -1,3 +1,4 @@
+import type { Marker } from '@/src/api/reports/types';
 import {
   Camera,
   MapView,
@@ -30,6 +31,7 @@ import {
 import { createMapStyle } from '../helpers/map-style';
 import { AddMarkerButton } from './AddMarkerButton';
 import { CenterLocationButton } from './CenterLocationButton';
+import { IncidentMarker } from './IncidentMarker';
 import { OutsideCyprusBanner } from './OutsideCyprusBanner';
 import { PermissionBanner } from './PermissionBanner';
 import { TemporaryMarker } from './TemporaryMarker';
@@ -43,12 +45,20 @@ type IProps = {
   selectedPoint: SelectedPoint | null;
   onPointSelect: (point: SelectedPoint | null) => void;
   onAddPress: () => void;
+  markers?: Marker[];
+  onMarkerPress?: (marker: Marker) => void;
 };
 
 const MIN_ZOOM_FOR_MARKER = 13;
 
 
-export function CyprusOfflineMap({ selectedPoint, onPointSelect, onAddPress }: IProps) {
+export function CyprusOfflineMap({ 
+  selectedPoint, 
+  onPointSelect, 
+  onAddPress,
+  markers = [],
+  onMarkerPress,
+}: IProps) {
   const { t } = useTranslation();
   const [assets, error] = useAssets([
     require('../../../../assets/tiles/cyprusmap.mbtiles'),
@@ -152,7 +162,7 @@ export function CyprusOfflineMap({ selectedPoint, onPointSelect, onAddPress }: I
         duration: 300,
       });
     } catch (err) {
-      console.error('Failed to get map center', err);
+      // console.error('Failed to get map center', err);
     }
   };
 
@@ -240,6 +250,14 @@ export function CyprusOfflineMap({ selectedPoint, onPointSelect, onAddPress }: I
         {permissionStatus === 'granted' && (
           <UserLocation visible onUpdate={handleLocationChanged} />
         )}
+
+        {markers.map((marker) => (
+          <IncidentMarker
+            key={marker.id}
+            marker={marker}
+            onPress={() => onMarkerPress?.(marker)}
+          />
+        ))}
 
         {selectedPoint && (
           <TemporaryMarker
