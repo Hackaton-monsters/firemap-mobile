@@ -59,6 +59,36 @@ export default {
     },
     chats: {
       title: 'Chats Screen',
+      noMessages: 'No messages yet',
+      typeMessage: 'Type a message...',
+      joinChat: 'Join Chat',
+      dateDividers: {
+        today: 'Today',
+        yesterday: 'Yesterday',
+        days: {
+          sunday: 'Sunday',
+          monday: 'Monday',
+          tuesday: 'Tuesday',
+          wednesday: 'Wednesday',
+          thursday: 'Thursday',
+          friday: 'Friday',
+          saturday: 'Saturday',
+        },
+        months: {
+          jan: 'Jan',
+          feb: 'Feb',
+          mar: 'Mar',
+          apr: 'Apr',
+          may: 'May',
+          jun: 'Jun',
+          jul: 'Jul',
+          aug: 'Aug',
+          sep: 'Sep',
+          oct: 'Oct',
+          nov: 'Nov',
+          dec: 'Dec',
+        },
+      },
     },
     settings: {
       profile: {

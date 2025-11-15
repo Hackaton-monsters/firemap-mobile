@@ -59,6 +59,36 @@ export default {
     },
     chats: {
       title: 'Экран чатов',
+      noMessages: 'Пока нет сообщений',
+      typeMessage: 'Введите сообщение...',
+      joinChat: 'Присоединиться к чату',
+      dateDividers: {
+        today: 'Сегодня',
+        yesterday: 'Вчера',
+        days: {
+          sunday: 'Воскресенье',
+          monday: 'Понедельник',
+          tuesday: 'Вторник',
+          wednesday: 'Среда',
+          thursday: 'Четверг',
+          friday: 'Пятница',
+          saturday: 'Суббота',
+        },
+        months: {
+          jan: 'янв',
+          feb: 'фев',
+          mar: 'мар',
+          apr: 'апр',
+          may: 'май',
+          jun: 'июн',
+          jul: 'июл',
+          aug: 'авг',
+          sep: 'сен',
+          oct: 'окт',
+          nov: 'ноя',
+          dec: 'дек',
+        },
+      },
     },
     settings: {
       profile: {

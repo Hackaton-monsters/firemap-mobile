@@ -204,12 +204,12 @@ export function CyprusOfflineMap({
     onPointSelect(null);
   };
 
-  const handleMarkerPress = (markers: Marker[]) => {
-    const shouldZoomIn = markers.length > 1;
+  const handleMarkerPress = (pressedMarkers: Marker[]) => {
+    const shouldZoomIn = pressedMarkers.length > 1;
 
     if (shouldZoomIn) {
       if (!cameraRef.current) return
-      const { lon, lat } = markers[0];
+      const { lon, lat } = pressedMarkers[0];
 
       const isZoomMoreOrEqualThanMin = currentZoom >= MIN_ZOOM_FOR_MARKER;
       const targetZoom = isZoomMoreOrEqualThanMin ? currentZoom + 1 : MIN_ZOOM_FOR_MARKER;
@@ -221,7 +221,7 @@ export function CyprusOfflineMap({
       });
       return;
     } else {
-      onMarkerPress(markers[0]);
+      onMarkerPress(pressedMarkers[0]);
     }
   };
 

@@ -1,9 +1,11 @@
 import { useChatHistoryQuery } from '@/src/api/chat/hooks';
-import type { ChatMessage } from '@/src/api/chat/types';
+import type { DisplayMessage } from '@/src/api/chat/types';
 import { Colors } from '@/src/shared/constants/colors';
 import { chatWebSocketService, useChatWebSocket } from '@/src/shared/services/chat-websocket.service';
 import { useAuthStore } from '@/src/shared/stores/auth.store';
-import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { ChatInput } from './ChatInput';
 import { ChatMessageList } from './ChatMessageList';
@@ -16,45 +18,51 @@ type IProps = {
   onJoinSuccess: () => void;
 };
 
-export const ChatView = ({ chatId, isJoined, onJoinSuccess }: IProps) => {
+export const ChatView = ({ chatId, onJoinSuccess }: IProps) => {
+  const isJoined = true;
+  const { t } = useTranslation();
   const currentUser = useAuthStore((state) => state.user);
-  const { data, isLoading, refetch } = useChatHistoryQuery(chatId, true);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useChatHistoryQuery(chatId, true);
   const { connect, disconnect } = useChatWebSocket();
-
-  useEffect(() => {
-    if (data?.messages) {
-      setMessages([...data.messages].reverse());
-    }
-  }, [data]);
 
   useEffect(() => {
     connect();
 
     const unsubscribe = chatWebSocketService.subscribe(chatId, (newMessage) => {
-      setMessages((prev) => [newMessage, ...prev]);
+      // Update query cache when receiving WebSocket message
+      queryClient.setQueryData(['chat', chatId, 'history'], (old: any) => {
+        if (!old) return old;
+        
+        // Check if message already exists (avoid duplicates)
+        const exists = old.messages.some((msg: any) => msg.id === newMessage.id);
+        if (exists) return old;
+        
+        return {
+          ...old,
+          messages: [...old.messages, newMessage],
+        };
+      });
     });
 
     return () => {
       unsubscribe();
       disconnect();
     };
-  }, [chatId, connect, disconnect]);
-
-  const handleMessageSent = () => {
-    refetch();
-  };
+  }, [chatId, connect, disconnect, queryClient]);
 
   if (isLoading) {
     return <ChatSkeleton />;
   }
+
+  const messages: DisplayMessage[] = data?.messages ? [...data.messages].reverse() : [];
 
   return (
     <View style={styles.container}>
       <View style={styles.messagesContainer}>
         {messages.length === 0 ? (
           <View style={styles.centered}>
-            <Text style={styles.emptyText}>No messages yet</Text>
+            <Text style={styles.emptyText}>{t('chats.noMessages')}</Text>
           </View>
         ) : (
           <ChatMessageList messages={messages} currentUserId={currentUser?.id} />
@@ -62,7 +70,7 @@ export const ChatView = ({ chatId, isJoined, onJoinSuccess }: IProps) => {
       </View>
 
       {isJoined ? (
-        <ChatInput chatId={chatId} onMessageSent={handleMessageSent} />
+        <ChatInput chatId={chatId} />
       ) : (
         <JoinChatButton chatId={chatId} onJoined={onJoinSuccess} />
       )}

@@ -9,8 +9,17 @@ export type ChatMessage = {
   id: number;
   text: string;
   user: ChatUser;
-  createdAt: string;
+  created_at: string;
 };
+
+export type PendingMessage = {
+  id: string;
+  text: string;
+  user: ChatUser;
+  isPending: true;
+};
+
+export type DisplayMessage = ChatMessage | PendingMessage;
 
 export type ChatHistoryResponse = {
   id: number;
@@ -24,7 +33,7 @@ export type ChatHistoryResponse = {
     type: 'fire' | 'rescue';
     title: string;
   };
-  messages: ChatMessage[];
+  messages: DisplayMessage[];
 };
 
 export type SendMessagePayload = {

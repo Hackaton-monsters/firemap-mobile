@@ -1,5 +1,6 @@
 import { useJoinChatMutation } from '@/src/api/chat/hooks';
 import Button from '@/src/shared/uikit/Button/Button';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
 type IProps = {
@@ -8,6 +9,7 @@ type IProps = {
 };
 
 export const JoinChatButton = ({ chatId, onJoined }: IProps) => {
+  const { t } = useTranslation();
   const joinChatMutation = useJoinChatMutation();
 
   const handleJoin = async () => {
@@ -21,7 +23,7 @@ export const JoinChatButton = ({ chatId, onJoined }: IProps) => {
 
   return (
     <Button
-      title="Join Chat"
+      title={t('chats.joinChat')}
       onPress={handleJoin}
       isLoading={joinChatMutation.isPending}
       disabled={joinChatMutation.isPending}

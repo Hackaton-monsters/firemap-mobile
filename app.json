@@ -65,6 +65,12 @@
           }
         }
       ],
+      [
+        "@digitalartlab/expo-plugin-localization",
+        {
+          "locales": ["el", "en", "ru"]
+        }
+      ],
       "expo-localization",
       [
         "expo-location",

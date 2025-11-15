@@ -59,6 +59,36 @@ export default {
     },
     chats: {
       title: 'Οθόνη συνομιλιών',
+      noMessages: 'Δεν υπάρχουν μηνύματα ακόμα',
+      typeMessage: 'Γράψτε ένα μήνυμα...',
+      joinChat: 'Συμμετοχή στη συνομιλία',
+      dateDividers: {
+        today: 'Σήμερα',
+        yesterday: 'Χθες',
+        days: {
+          sunday: 'Κυριακή',
+          monday: 'Δευτέρα',
+          tuesday: 'Τρίτη',
+          wednesday: 'Τετάρτη',
+          thursday: 'Πέμπτη',
+          friday: 'Παρασκευή',
+          saturday: 'Σάββατο',
+        },
+        months: {
+          jan: 'Ιαν',
+          feb: 'Φεβ',
+          mar: 'Μαρ',
+          apr: 'Απρ',
+          may: 'Μαϊ',
+          jun: 'Ιουν',
+          jul: 'Ιουλ',
+          aug: 'Αυγ',
+          sep: 'Σεπ',
+          oct: 'Οκτ',
+          nov: 'Νοε',
+          dec: 'Δεκ',
+        },
+      },
     },
     settings: {
       profile: {

@@ -2,29 +2,32 @@ import { useSendMessageMutation } from '@/src/api/chat/hooks';
 import { Colors } from '@/src/shared/constants/colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 type IProps = {
   chatId: number;
-  onMessageSent: () => void;
 };
 
-export const ChatInput = ({ chatId, onMessageSent }: IProps) => {
+export const ChatInput = ({ chatId }: IProps) => {
+  const { t } = useTranslation();
   const [message, setMessage] = useState('');
-  const sendMessageMutation = useSendMessageMutation();
+  const sendMessageMutation = useSendMessageMutation(chatId);
 
   const handleSend = async () => {
     if (!message.trim() || sendMessageMutation.isPending) return;
 
+    const messageText = message.trim();
+    setMessage('');
+
     try {
       await sendMessageMutation.mutateAsync({
         chatId,
-        message: message.trim(),
+        message: messageText,
       });
-      setMessage('');
-      onMessageSent();
     } catch (error) {
-      // console.error('Failed to send message:', error);
+      console.error('Failed to send message:', error);
+      // Error handling - optimistic update will be rolled back automatically
     }
   };
 
@@ -32,7 +35,7 @@ export const ChatInput = ({ chatId, onMessageSent }: IProps) => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Type a message..."
+        placeholder={t('chats.typeMessage')}
         placeholderTextColor={Colors.textTertiary}
         value={message}
         onChangeText={setMessage}

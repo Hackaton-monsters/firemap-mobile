@@ -1,10 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../shared/stores/auth.store";
 import { apiClient } from "../client";
 import type {
   ChatHistoryResponse,
   JoinChatPayload,
   JoinChatResponse,
+  PendingMessage,
   SendMessagePayload,
   SendMessageResponse,
 } from "./types";
@@ -23,16 +24,76 @@ export const useChatHistoryQuery = (chatId: number, enabled: boolean = true) => 
   });
 };
 
-export const useSendMessageMutation = () => {
+export const useSendMessageMutation = (chatId: number) => {
   const token = useAuthStore((state) => state.token);
+  const currentUser = useAuthStore((state) => state.user);
+  const queryClient = useQueryClient();
 
-  return useMutation<SendMessageResponse, Error, SendMessagePayload>({
+  return useMutation<SendMessageResponse, Error, SendMessagePayload, { previousData?: ChatHistoryResponse }>({
     mutationFn: async (payload) => {
-      return apiClient<SendMessageResponse>(`/chat/${payload.chatId}/messages`, {
+      return apiClient<SendMessageResponse>(`/message`, {
         method: "POST",
-        body: JSON.stringify({ message: payload.message }),
+        body: JSON.stringify({ 
+          chat_id: payload.chatId, 
+          text: payload.message 
+        }),
         token,
       });
+    },
+    onMutate: async (payload) => {
+      if (!currentUser) return { previousData: undefined };
+
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["chat", chatId, "history"] });
+
+      // Snapshot previous value
+      const previousData = queryClient.getQueryData<ChatHistoryResponse>(["chat", chatId, "history"]);
+
+      // Optimistically update cache with pending message
+      if (previousData) {
+        const pendingMessage: PendingMessage = {
+          id: `pending-${Date.now()}`,
+          text: payload.message,
+          user: {
+            id: currentUser.id,
+            email: currentUser.email,
+            nickname: currentUser.nickname,
+            role: currentUser.role === 'gov' ? 'government' : 'user',
+          },
+          isPending: true,
+        };
+
+        queryClient.setQueryData<ChatHistoryResponse>(["chat", chatId, "history"], {
+          ...previousData,
+          messages: [...previousData.messages, pendingMessage],
+        });
+      }
+
+      return { previousData };
+    },
+    onSuccess: (response, variables, context) => {
+      // Replace pending message with real message from server
+      if (context?.previousData) {
+        queryClient.setQueryData<ChatHistoryResponse>(["chat", chatId, "history"], (old) => {
+          if (!old) return context.previousData;
+          
+          // Remove pending messages and add real message
+          const filteredMessages = old.messages.filter(
+            (msg) => !('isPending' in msg && msg.isPending)
+          );
+          
+          return {
+            ...old,
+            messages: [...filteredMessages, response.message],
+          };
+        });
+      }
+    },
+    onError: (error, variables, context) => {
+      // Rollback on error
+      if (context?.previousData) {
+        queryClient.setQueryData(["chat", chatId, "history"], context.previousData);
+      }
     },
   });
 };
