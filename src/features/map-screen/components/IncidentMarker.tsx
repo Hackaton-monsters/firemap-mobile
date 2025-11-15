@@ -1,23 +1,31 @@
 import type { Marker } from '@/src/api/reports/types';
 import { Colors } from '@/src/shared/constants/colors';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { PointAnnotation } from '@maplibre/maplibre-react-native';
+import { PointAnnotation, type PointAnnotationRef } from '@maplibre/maplibre-react-native';
+import { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 type IProps = {
   marker: Marker;
-  onPress: () => void;
+  onPress?: (marker: Marker) => void;
 };
 
 export const IncidentMarker = ({ marker, onPress }: IProps) => {
+  const ref = useRef<PointAnnotationRef>(null);
   const iconName = marker.type === 'fire' ? 'local-fire-department' : 'health-and-safety';
   const iconColor = marker.type === 'fire' ? Colors.danger : Colors.warning;
 
+  const handlePress = () => {
+    onPress?.(marker);
+    ref.current?.refresh();
+  };
+
   return (
     <PointAnnotation
+      ref={ref}
       id={`marker-${marker.id}`}
       coordinate={[marker.lon, marker.lat]}
-      onSelected={onPress}
+      onSelected={handlePress}
     >
       <View style={styles.container}>
         <View style={[styles.iconWrapper, { backgroundColor: iconColor }]}>

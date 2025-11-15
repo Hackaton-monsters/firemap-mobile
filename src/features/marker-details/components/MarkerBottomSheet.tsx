@@ -8,15 +8,19 @@ import { StyleSheet } from 'react-native';
 import { MarkerContent } from './MarkerContent';
 
 type IProps = {
+  visible: boolean;
   marker: Marker | null;
   currentUserId?: string;
   isJoined?: boolean;
+  onClose: () => void;
 };
 
 export const MarkerBottomSheet = ({
+  visible,
   marker,
   currentUserId,
   isJoined = false,
+  onClose,
 }: IProps) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [joined, setJoined] = useState(isJoined);
@@ -24,12 +28,12 @@ export const MarkerBottomSheet = ({
   const tabBarHeight = useBottomTabBarHeight();
 
   useEffect(() => {
-    if (marker) {
+    if (visible && marker) {
       bottomSheetRef.current?.expand();
     } else {
       bottomSheetRef.current?.close();
     }
-  }, [marker]);
+  }, [visible, marker]);
 
   const handleJoinSuccess = () => {
     setJoined(true);
@@ -41,9 +45,10 @@ export const MarkerBottomSheet = ({
       index={-1}
       snapPoints={snapPoints}
       enablePanDownToClose
+      onClose={onClose}
     >
       <BottomSheetView style={[styles.contentContainer, { paddingBottom: tabBarHeight }]}>
-        {marker && (
+        {visible && marker && (
           <MarkerContent
             marker={marker}
             currentUserId={currentUserId}

@@ -1,55 +1,32 @@
 import { useMarkersQuery } from '@/src/api/reports/hooks';
-import type { Marker, MarkerResponse } from '@/src/api/reports/types';
-import { CyprusOfflineMap, SelectedPoint } from "@/src/features/map-screen/components/CyprusOfflineMap";
+import { CyprusOfflineMap } from "@/src/features/map-screen/components/CyprusOfflineMap";
+import { useMapScreen } from '@/src/features/map-screen/hooks/useMapScreen';
 import { MarkerBottomSheet } from '@/src/features/marker-details/components/MarkerBottomSheet';
 import { ReportFormBottomSheet } from '@/src/features/report-creation/components/ReportFormBottomSheet';
 import { ReportSuccessNotice } from '@/src/features/report-creation/components/ReportSuccessNotice';
 import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
 import { useAuthStore } from '@/src/shared/stores/auth.store';
-import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 export default function MapScreen() {
-  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
-  const [showReportForm, setShowReportForm] = useState(false);
-  const [successResponse, setSuccessResponse] = useState<MarkerResponse | null>(null);
-  const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
-  
   const tabBarHeight = useBottomTabBarHeight();
   const { data: markersData, refetch: refetchMarkers } = useMarkersQuery();
   const currentUser = useAuthStore((state) => state.user);
 
-  const handleAddPress = () => {
-    if (!selectedPoint) return;
-    setShowReportForm(true);
-  };
-
-  const handleCloseForm = () => {
-    setShowReportForm(false);
-    setSelectedPoint(null);
-  };
-
-  const handleReportSuccess = (response: MarkerResponse) => {
-    setSuccessResponse(response);
-    setShowReportForm(false);
-    setSelectedPoint(null);
-    refetchMarkers();
-  };
-
-  const handleCloseNotice = () => {
-    setSuccessResponse(null);
-  };
-
-  const handleOpenReport = () => {
-    if (!successResponse) return;
-    setSelectedMarker(successResponse.marker);
-    setSuccessResponse(null);
-  };
-
-  const handleMarkerPress = (marker: Marker) => {
-    setSelectedMarker(marker);
-    setSelectedPoint(null);
-  };
+  const {
+    selectedPoint,
+    showReportForm,
+    successResponse,
+    selectedMarker,
+    setSelectedPoint,
+    handleAddPress,
+    handleCloseForm,
+    handleReportSuccess,
+    handleCloseNotice,
+    handleOpenReport,
+    handleMarkerPress,
+    handleCloseMarkerSheet,
+  } = useMapScreen(refetchMarkers);
 
   return (
     <View style={[styles.container, { paddingBottom: tabBarHeight }]}>
@@ -57,8 +34,9 @@ export default function MapScreen() {
         selectedPoint={selectedPoint}
         onPointSelect={setSelectedPoint}
         onAddPress={handleAddPress}
-        markers={markersData?.markers || []}
+        markers={markersData?.markers}
         onMarkerPress={handleMarkerPress}
+        selectedMarkerId={selectedMarker?.id}
       />
       <ReportFormBottomSheet
         visible={showReportForm && !!selectedPoint}
@@ -76,9 +54,11 @@ export default function MapScreen() {
         />
       )}
       <MarkerBottomSheet
+        visible={!!selectedMarker}
         marker={selectedMarker}
         currentUserId={currentUser?.id}
         isJoined={false}
+        onClose={handleCloseMarkerSheet}
       />
     </View>
   );

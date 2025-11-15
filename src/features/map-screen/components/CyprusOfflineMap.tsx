@@ -43,10 +43,11 @@ export type SelectedPoint = {
 
 type IProps = {
   selectedPoint: SelectedPoint | null;
+  markers: Marker[] | undefined;
+  selectedMarkerId: Marker['id'] | undefined;
   onPointSelect: (point: SelectedPoint | null) => void;
   onAddPress: () => void;
-  markers?: Marker[];
-  onMarkerPress?: (marker: Marker) => void;
+  onMarkerPress: (marker: Marker) => void;
 };
 
 const MIN_ZOOM_FOR_MARKER = 11;
@@ -56,6 +57,7 @@ export function CyprusOfflineMap({
   onPointSelect,
   onAddPress,
   markers = [],
+  selectedMarkerId,
   onMarkerPress,
 }: IProps) {
   const { t } = useTranslation();
@@ -166,6 +168,7 @@ export function CyprusOfflineMap({
   };
 
   const handleMapPress = async (event: NativeSyntheticEvent<PressEvent>) => {
+    console.log('Map pressed', event.nativeEvent);
     const { latitude, longitude } = event.nativeEvent;
 
     if (!isInCyprus(longitude, latitude)) {
@@ -193,6 +196,10 @@ export function CyprusOfflineMap({
 
   const handleMarkerCancel = () => {
     onPointSelect(null);
+  };
+
+  const handleMarkerPress = (marker: Marker) => {
+    onMarkerPress(marker);
   };
 
   const mapStyle = useMemo(() => {
@@ -252,9 +259,10 @@ export function CyprusOfflineMap({
 
         {markers.map((marker) => (
           <IncidentMarker
-            key={marker.id}
+            // Hack to deselect marker to select again
+            key={selectedMarkerId && marker.id === selectedMarkerId ? `marker-${marker.id}-selected` : `marker-${marker.id}`}
             marker={marker}
-            onPress={() => onMarkerPress?.(marker)}
+            onPress={handleMarkerPress}
           />
         ))}
 
