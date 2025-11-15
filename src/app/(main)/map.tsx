@@ -2,7 +2,7 @@ import { useMarkersQuery } from '@/src/api/reports/hooks';
 import type { Marker, MarkerResponse } from '@/src/api/reports/types';
 import { CyprusOfflineMap, SelectedPoint } from "@/src/features/map-screen/components/CyprusOfflineMap";
 import { MarkerBottomSheet } from '@/src/features/marker-details/components/MarkerBottomSheet';
-import { ReportFormModal } from '@/src/features/report-creation/components/ReportFormModal';
+import { ReportFormBottomSheet } from '@/src/features/report-creation/components/ReportFormBottomSheet';
 import { ReportSuccessNotice } from '@/src/features/report-creation/components/ReportSuccessNotice';
 import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
 import { useAuthStore } from '@/src/shared/stores/auth.store';
@@ -60,7 +60,7 @@ export default function MapScreen() {
         markers={markersData?.markers || []}
         onMarkerPress={handleMarkerPress}
       />
-      <ReportFormModal
+      <ReportFormBottomSheet
         visible={showReportForm && !!selectedPoint}
         latitude={selectedPoint?.latitude ?? 0}
         longitude={selectedPoint?.longitude ?? 0}

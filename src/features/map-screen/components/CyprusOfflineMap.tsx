@@ -49,12 +49,11 @@ type IProps = {
   onMarkerPress?: (marker: Marker) => void;
 };
 
-const MIN_ZOOM_FOR_MARKER = 13;
+const MIN_ZOOM_FOR_MARKER = 11;
 
-
-export function CyprusOfflineMap({ 
-  selectedPoint, 
-  onPointSelect, 
+export function CyprusOfflineMap({
+  selectedPoint,
+  onPointSelect,
   onAddPress,
   markers = [],
   onMarkerPress,
