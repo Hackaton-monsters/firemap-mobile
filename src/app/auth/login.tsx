@@ -42,7 +42,7 @@ export default function LoginScreen() {
       { email, password },
       {
         onSuccess: () => {
-          router.replace('/home');
+          router.replace('/(main)/map');
         },
         onError: (error) => {
           Alert.alert(t('auth.login.errors.loginFailed'), error.message);

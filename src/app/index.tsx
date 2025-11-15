@@ -16,7 +16,7 @@ export default function Index() {
   }
 
   if (isAuthenticated) {
-    return <Redirect href="/home" />;
+    return <Redirect href="/(main)/map" />;
   }
 
   return <Redirect href="/auth/login" />;

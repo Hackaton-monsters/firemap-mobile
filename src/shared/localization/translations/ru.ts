@@ -28,6 +28,26 @@ export default {
         },
       },
     },
+    tabs: {
+      map: 'Карта',
+      chats: 'Чаты',
+      settings: 'Настройки',
+    },
+    map: {
+      title: 'Экран карты',
+    },
+    chats: {
+      title: 'Экран чатов',
+    },
+    settings: {
+      profile: {
+        title: 'Профиль',
+        email: 'Email',
+        nickname: 'Никнейм',
+        role: 'Роль',
+      },
+      logout: 'Выйти',
+    },
     home: {
       welcome: 'Добро пожаловать!',
       email: 'Email:',

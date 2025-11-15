@@ -28,6 +28,26 @@ export default {
         },
       },
     },
+    tabs: {
+      map: 'Map',
+      chats: 'Chats',
+      settings: 'Settings',
+    },
+    map: {
+      title: 'Map Screen',
+    },
+    chats: {
+      title: 'Chats Screen',
+    },
+    settings: {
+      profile: {
+        title: 'Profile',
+        email: 'Email',
+        nickname: 'Nickname',
+        role: 'Role',
+      },
+      logout: 'Logout',
+    },
     home: {
       welcome: 'Welcome!',
       email: 'Email:',

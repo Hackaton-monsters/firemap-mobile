@@ -28,6 +28,26 @@ export default {
         },
       },
     },
+    tabs: {
+      map: 'Χάρτης',
+      chats: 'Συνομιλίες',
+      settings: 'Ρυθμίσεις',
+    },
+    map: {
+      title: 'Οθόνη χάρτη',
+    },
+    chats: {
+      title: 'Οθόνη συνομιλιών',
+    },
+    settings: {
+      profile: {
+        title: 'Προφίλ',
+        email: 'Email',
+        nickname: 'Ψευδώνυμο',
+        role: 'Ρόλος',
+      },
+      logout: 'Αποσύνδεση',
+    },
     home: {
       welcome: 'Καλώς ήρθατε!',
       email: 'Email:',

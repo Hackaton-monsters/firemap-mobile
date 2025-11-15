@@ -50,7 +50,7 @@ export default function RegisterScreen() {
       { email, password, nickname },
       {
         onSuccess: () => {
-          router.replace('/home');
+          router.replace('/(main)/map');
         },
         onError: (error) => {
           Alert.alert(t('auth.register.errors.registrationFailed'), error.message);
