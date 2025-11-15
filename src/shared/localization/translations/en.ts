@@ -35,6 +35,20 @@ export default {
     },
     map: {
       title: 'Map Screen',
+      loading: 'Loading Cyprus map…',
+      loadError: 'Failed to load Cyprus tiles',
+      locationNotice: {
+        title: 'Location Notice',
+        message: 'You are currently outside Cyprus. This map only shows Cyprus region.',
+      },
+      permissions: {
+        title: 'Location Permission Required',
+        message: 'To show your position on the map, please enable location permissions in your device settings.',
+        cancel: 'Cancel',
+        openSettings: 'Open Settings',
+        bannerTitle: 'Location Access Needed',
+        bannerMessage: 'Enable location permissions to see your position on the map.',
+      },
     },
     chats: {
       title: 'Chats Screen',

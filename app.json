@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.firemap-mobile"
+      "bundleIdentifier": "com.anonymous.firemapmobile",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to show your position on the map."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,7 +23,12 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.firemapmobile",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "output": "static",
@@ -28,6 +36,7 @@
     },
     "plugins": [
       "expo-router",
+      "@maplibre/maplibre-react-native",
       [
         "expo-splash-screen",
         {
@@ -40,7 +49,21 @@
           }
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow FireMap to use your location to show your position on the map."
+        }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": [
+            "./assets/tiles/cyprusmap.mbtiles"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
