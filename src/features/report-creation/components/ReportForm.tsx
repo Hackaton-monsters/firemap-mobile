@@ -11,7 +11,7 @@ import { IncidentTypeSelector } from './IncidentTypeSelector';
 import { PhotoUploader } from './PhotoUploader';
 
 const MAX_PHOTOS = 5;
-const MIN_COMMENT_LENGTH = 10;
+const MIN_COMMENT_LENGTH = 5;
 
 type IncidentType = 'fire' | 'rescue';
 

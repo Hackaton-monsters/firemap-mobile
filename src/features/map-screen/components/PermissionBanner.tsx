@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../../shared/constants/colors';
+import Button from '../../../shared/uikit/Button/Button';
 
 type IProps = {
   onOpenSettings: () => void;
@@ -15,9 +16,11 @@ export const PermissionBanner = ({ onOpenSettings }: IProps) => {
     <View style={[styles.banner, { top: insets.top + 16 }]}>
       <Text style={styles.title}>{t('map.permissions.bannerTitle')}</Text>
       <Text style={styles.text}>{t('map.permissions.bannerMessage')}</Text>
-      <TouchableOpacity style={styles.button} onPress={onOpenSettings}>
-        <Text style={styles.buttonText}>{t('map.permissions.openSettings')}</Text>
-      </TouchableOpacity>
+      <Button
+        title={t('map.permissions.openSettings')}
+        onPress={onOpenSettings}
+        style={styles.button}
+      />
     </View>
   );
 };
@@ -49,15 +52,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   button: {
-    backgroundColor: Colors.info,
     paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: Colors.white,
-    fontSize: 14,
-    fontWeight: '600',
   },
 });

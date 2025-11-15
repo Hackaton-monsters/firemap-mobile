@@ -9,8 +9,8 @@ export default function Index() {
   const isLoading = useAuthStore((state) => state.isLoading);
   const setLoading = useAuthStore((state) => state.setLoading);
   
-  const { isLoading: isFetchingUser, isError } = useMeQuery();
-console.log(isFetchingUser)
+  const { isLoading: isFetchingUser } = useMeQuery();
+
   useEffect(() => {
     // When me query completes (success or error), mark loading as complete
     if (!isFetchingUser && isAuthenticated) {

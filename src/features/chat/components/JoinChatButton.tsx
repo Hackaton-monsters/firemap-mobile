@@ -1,6 +1,6 @@
 import { useJoinChatMutation } from '@/src/api/chat/hooks';
-import { Colors } from '@/src/shared/constants/colors';
-import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
+import Button from '@/src/shared/uikit/Button/Button';
+import { StyleSheet } from 'react-native';
 
 type IProps = {
   chatId: number;
@@ -20,36 +20,23 @@ export const JoinChatButton = ({ chatId, onJoined }: IProps) => {
   };
 
   return (
-    <Pressable
-      style={[styles.button, joinChatMutation.isPending && styles.buttonDisabled]}
+    <Button
+      title="Join Chat"
       onPress={handleJoin}
+      isLoading={joinChatMutation.isPending}
       disabled={joinChatMutation.isPending}
-    >
-      {joinChatMutation.isPending ? (
-        <ActivityIndicator size="small" color={Colors.white} />
-      ) : (
-        <Text style={styles.buttonText}>Join Chat</Text>
-      )}
-    </Pressable>
+      rootStyle={styles.buttonRoot}
+      style={styles.button}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
+  buttonRoot: {
     marginHorizontal: 16,
     marginVertical: 12,
+  },
+  button: {
     paddingVertical: 12,
-    borderRadius: 12,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.white,
   },
 });

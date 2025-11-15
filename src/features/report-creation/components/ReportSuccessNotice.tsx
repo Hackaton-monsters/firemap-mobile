@@ -17,7 +17,7 @@ type IProps = {
   isNew: boolean;
   marker: Marker;
   onClose: () => void;
-  onOpenReport: () => void;
+  onOpenReport: (marker: Marker) => void;
 };
 
 export const ReportSuccessNotice = ({
@@ -73,7 +73,7 @@ export const ReportSuccessNotice = ({
     handleClose();
     // Small delay to let animation complete
     setTimeout(() => {
-      onOpenReport();
+      onOpenReport(marker);
     }, 300);
   };
 

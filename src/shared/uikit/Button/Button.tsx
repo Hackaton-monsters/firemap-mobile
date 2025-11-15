@@ -90,20 +90,20 @@ const Button = ({
 const styles = StyleSheet.create({
   button: {
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
   primary: {
-    backgroundColor: Colors.buttonPrimary,
+    backgroundColor: Colors.primary,
   },
   secondary: {
     backgroundColor: Colors.white,
     borderWidth: 1,
-    borderColor: Colors.info,
+    borderColor: Colors.primary,
   },
   danger: {
-    backgroundColor: Colors.buttonDanger,
+    backgroundColor: Colors.danger,
   },
   disabled: {
     opacity: 0.6,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   secondaryText: {
-    color: Colors.info,
+    color: Colors.primary,
   },
   dangerText: {
     color: Colors.white,

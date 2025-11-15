@@ -22,8 +22,6 @@ export const ChatView = ({ chatId, isJoined, onJoinSuccess }: IProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const { connect, disconnect } = useChatWebSocket();
 
-  console.log({ data })
-
   useEffect(() => {
     if (data?.messages) {
       setMessages([...data.messages].reverse());

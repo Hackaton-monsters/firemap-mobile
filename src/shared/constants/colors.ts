@@ -56,14 +56,7 @@ export const Colors = {
   mapMarkerFire: '#FF6B6B',
   mapMarkerRescue: '#007AFF',
   mapPulse: '#FF6B6B',
-
   mapCenterOnUser: '#D84315',
-  
-  // Button Colors (computed from primary)
-  buttonPrimary: '#FF6B6B',
-  buttonPrimaryDisabled: '#FFAAAA',
-  buttonSecondary: '#F5F5F5',
-  buttonDanger: '#FF3B30',
 } as const;
 
 export type ColorKey = keyof typeof Colors;

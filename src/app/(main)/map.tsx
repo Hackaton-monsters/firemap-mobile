@@ -7,6 +7,7 @@ import { ReportSuccessNotice } from '@/src/features/report-creation/components/R
 import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
 import { StyleSheet, View } from 'react-native';
 
+
 export default function MapScreen() {
   const tabBarHeight = useBottomTabBarHeight();
   const { data: markersData, refetch: refetchMarkers } = useMarkersQuery();
@@ -45,9 +46,9 @@ export default function MapScreen() {
       />
       {successResponse && (
         <ReportSuccessNotice
-          isNew={successResponse.isNew}
-          marker={successResponse.marker}
+          isNew={true}
           onClose={handleCloseNotice}
+          marker={successResponse}
           onOpenReport={handleOpenReport}
         />
       )}

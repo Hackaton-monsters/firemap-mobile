@@ -1,11 +1,15 @@
-import type { Marker, MarkerResponse } from '@/src/api/reports/types';
-import type { SelectedPoint } from '@/src/features/map-screen/components/CyprusOfflineMap';
-import { useState } from 'react';
+import type { Marker, MarkerResponse } from "@/src/api/reports/types";
+import type { SelectedPoint } from "@/src/features/map-screen/components/CyprusOfflineMap";
+import { useState } from "react";
 
 export const useMapScreen = (refetchMarkers: () => void) => {
-  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null);
+  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(
+    null
+  );
   const [showReportForm, setShowReportForm] = useState(false);
-  const [successResponse, setSuccessResponse] = useState<MarkerResponse | null>(null);
+  const [successResponse, setSuccessResponse] = useState<MarkerResponse | null>(
+    null
+  );
   const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
 
   const handleAddPress = () => {
@@ -29,9 +33,8 @@ export const useMapScreen = (refetchMarkers: () => void) => {
     setSuccessResponse(null);
   };
 
-  const handleOpenReport = () => {
-    if (!successResponse) return;
-    setSelectedMarker(successResponse.marker);
+  const handleOpenReport = (marker: Marker) => {
+    setSelectedMarker(marker);
     setSuccessResponse(null);
   };
 
@@ -50,10 +53,10 @@ export const useMapScreen = (refetchMarkers: () => void) => {
     showReportForm,
     successResponse,
     selectedMarker,
-    
+
     // Setters
     setSelectedPoint,
-    
+
     // Handlers
     handleAddPress,
     handleCloseForm,
