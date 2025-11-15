@@ -46,10 +46,10 @@ export default function MapScreen() {
       />
       {successResponse && (
         <ReportSuccessNotice
-          isNew={true}
+          isNew={successResponse.isNew}
           onClose={handleCloseNotice}
-          marker={successResponse}
           onOpenReport={handleOpenReport}
+          marker={successResponse.marker}
         />
       )}
       <MarkerBottomSheet

@@ -1,12 +1,13 @@
 import type { Marker } from '@/src/api/reports/types';
 import {
   Camera,
+  Images,
   MapView,
   PressEvent,
   UserLocation,
   type CameraRef,
   type Location as MapLibreLocation,
-  type MapViewRef,
+  type MapViewRef
 } from '@maplibre/maplibre-react-native';
 import { useAssets } from 'expo-asset';
 import * as Location from 'expo-location';
@@ -31,10 +32,16 @@ import {
 import { createMapStyle } from '../helpers/map-style';
 import { AddMarkerButton } from './AddMarkerButton';
 import { CenterLocationButton } from './CenterLocationButton';
-import { IncidentMarker } from './IncidentMarker';
+import { IncidentsMarkers } from './IncidentsMarkers';
 import { OutsideCyprusBanner } from './OutsideCyprusBanner';
 import { PermissionBanner } from './PermissionBanner';
 import { TemporaryMarker } from './TemporaryMarker';
+
+// @ts-ignore
+import fireMarker from '@/assets/images/fire-marker.png';
+// @ts-ignore
+import rescueMarker from '@/assets/images/rescue-marker.png';
+import { MARKERS_TYPES } from '../constants/markers';
 
 export type SelectedPoint = {
   longitude: number;
@@ -57,7 +64,6 @@ export function CyprusOfflineMap({
   onPointSelect,
   onAddPress,
   markers = [],
-  selectedMarkerId,
   onMarkerPress,
 }: IProps) {
   const { t } = useTranslation();
@@ -198,8 +204,25 @@ export function CyprusOfflineMap({
     onPointSelect(null);
   };
 
-  const handleMarkerPress = (marker: Marker) => {
-    onMarkerPress(marker);
+  const handleMarkerPress = (markers: Marker[]) => {
+    const shouldZoomIn = markers.length > 1;
+
+    if (shouldZoomIn) {
+      if (!cameraRef.current) return
+      const { lon, lat } = markers[0];
+
+      const isZoomMoreOrEqualThanMin = currentZoom >= MIN_ZOOM_FOR_MARKER;
+      const targetZoom = isZoomMoreOrEqualThanMin ? currentZoom + 1 : MIN_ZOOM_FOR_MARKER;
+
+      cameraRef.current.flyTo({
+        center: { longitude: lon, latitude: lat },
+        zoom: targetZoom,
+        duration: 800,
+      });
+      return;
+    } else {
+      onMarkerPress(markers[0]);
+    }
   };
 
   const mapStyle = useMemo(() => {
@@ -252,19 +275,23 @@ export function CyprusOfflineMap({
           minZoom={7}
           maxZoom={18}
         />
+        <Images
+          images={{
+            [MARKERS_TYPES.fire]: fireMarker,
+            [MARKERS_TYPES.rescue]: rescueMarker,
+          }}
+        />
+
 
         {permissionStatus === 'granted' && (
           <UserLocation visible onUpdate={handleLocationChanged} />
         )}
 
-        {markers.map((marker) => (
-          <IncidentMarker
-            // Hack to deselect marker to select again
-            key={selectedMarkerId && marker.id === selectedMarkerId ? `marker-${marker.id}-selected` : `marker-${marker.id}`}
-            marker={marker}
-            onPress={handleMarkerPress}
-          />
-        ))}
+
+        <IncidentsMarkers
+          markers={markers}
+          onPress={handleMarkerPress}
+        />
 
         {selectedPoint && (
           <TemporaryMarker

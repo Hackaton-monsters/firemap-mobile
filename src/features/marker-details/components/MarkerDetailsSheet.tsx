@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import type BottomSheet from '@gorhom/bottom-sheet';
 import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -50,7 +50,6 @@ type IProps = {
 
 export const MarkerDetailsSheet = ({ marker, visible, onClose }: IProps) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ['70%'], []);
 
   useEffect(() => {
     if (visible && marker) {
@@ -66,7 +65,6 @@ export const MarkerDetailsSheet = ({ marker, visible, onClose }: IProps) => {
     <StyledBottomSheet
       ref={bottomSheetRef}
       index={-1}
-      snapPoints={snapPoints}
       enablePanDownToClose
       onClose={onClose}
     >

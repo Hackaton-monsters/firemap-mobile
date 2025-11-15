@@ -23,7 +23,10 @@ export type MarkerPayload = {
   photos?: string[]; // Array of images IDs
 };
 
-export type MarkerResponse = Marker;
+export type MarkerResponse = {
+  isNew: boolean;
+  marker: Marker;
+};
 
 export type MarkersResponse = {
   markers: Marker[];
