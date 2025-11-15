@@ -48,6 +48,10 @@ Always use the following stack:
 	-	Helpers and regular functions — camelCase (formatDate, buildQueryParams)
 	-	Hooks — prefix with use (useAuthStore, useLoginMutation)
 
+5.	Localization:
+	-	Use expo-localization and react-i18next to detect the device locale and region.
+	-	Avoid hard-coded user-facing strings inside components; route them through a localization layer.
+	-	Place shared localization utilities (e.g., helpers for picking language, formatting by locale) in src/shared/helpers or a dedicated src/shared/localization module.
 
 ### Project Structure
 
@@ -62,7 +66,7 @@ src/
   │       ├── components
   │       ├── helpers
   │       └── screens
-  └── shared              # Shared utilities and UI (helpers, uikit, etc.)
+  └── shared              # Shared utilities and UI (localization, helpers, uikit, etc.)
 ```
 
 #### src/app
@@ -152,6 +156,7 @@ Example structure:
 
 ```tsx
 src/shared/
+  localization/
   helpers/
     formatDate.ts
     isEmailValid.ts

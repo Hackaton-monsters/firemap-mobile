@@ -1,25 +1,23 @@
 import { useRegisterMutation } from '@/src/api/auth/hooks';
+import { validateEmail } from '@/src/shared/helpers/validation';
+import Button from '@/src/shared/uikit/Button/Button';
+import Input from '@/src/shared/uikit/Input/Input';
+import TextButton from '@/src/shared/uikit/TextButton/TextButton';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
-const validateEmail = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
 export default function RegisterScreen() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
@@ -34,17 +32,17 @@ export default function RegisterScreen() {
     setPasswordError('');
 
     if (!email.trim() || !password.trim() || !nickname.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert(t('common.error'), t('auth.register.errors.fillAllFields'));
       return;
     }
 
     if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address');
+      setEmailError(t('auth.register.errors.invalidEmail'));
       return;
     }
 
     if (password.length < 6) {
-      setPasswordError('Password must be at least 6 characters');
+      setPasswordError(t('auth.register.errors.passwordTooShort'));
       return;
     }
 
@@ -55,7 +53,7 @@ export default function RegisterScreen() {
           router.replace('/home');
         },
         onError: (error) => {
-          Alert.alert('Registration Failed', error.message);
+          Alert.alert(t('auth.register.errors.registrationFailed'), error.message);
         },
       }
     );
@@ -75,62 +73,53 @@ export default function RegisterScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.formContainer}>
-      <Text style={styles.title}>Register</Text>
+          <Text style={styles.title}>{t('auth.register.title')}</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nickname"
-        value={nickname}
-        onChangeText={setNickname}
-        editable={!registerMutation.isPending}
-      />
+          <Input
+            placeholder={t('auth.register.nickname')}
+            value={nickname}
+            onChangeText={setNickname}
+            editable={!registerMutation.isPending}
+          />
 
-      <TextInput
-        style={[styles.input, emailError ? styles.inputError : null]}
-        placeholder="Email"
-        value={email}
-        onChangeText={(text) => {
-          setEmail(text);
-          setEmailError('');
-        }}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        editable={!registerMutation.isPending}
-      />
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+          <Input
+            placeholder={t('auth.register.email')}
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              setEmailError('');
+            }}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            editable={!registerMutation.isPending}
+            error={emailError}
+          />
 
-      <TextInput
-        style={[styles.input, passwordError ? styles.inputError : null]}
-        placeholder="Password"
-        value={password}
-        onChangeText={(text) => {
-          setPassword(text);
-          setPasswordError('');
-        }}
-        secureTextEntry
-        editable={!registerMutation.isPending}
-      />
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+          <Input
+            placeholder={t('auth.register.password')}
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              setPasswordError('');
+            }}
+            secureTextEntry
+            editable={!registerMutation.isPending}
+            error={passwordError}
+          />
 
-      <TouchableOpacity
-        style={[styles.button, registerMutation.isPending && styles.buttonDisabled]}
-        onPress={handleRegister}
-        disabled={registerMutation.isPending}
-      >
-        {registerMutation.isPending ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Register</Text>
-        )}
-      </TouchableOpacity>
+          <Button
+            title={t('auth.register.registerButton')}
+            onPress={handleRegister}
+            isLoading={registerMutation.isPending}
+            disabled={registerMutation.isPending}
+            style={styles.registerButton}
+          />
 
-      <TouchableOpacity
-        style={styles.linkButton}
-        onPress={navigateToLogin}
-        disabled={registerMutation.isPending}
-      >
-        <Text style={styles.linkText}>Already have an account? Login</Text>
-      </TouchableOpacity>
+          <TextButton
+            title={t('auth.register.haveAccount')}
+            onPress={navigateToLogin}
+            disabled={registerMutation.isPending}
+          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -155,44 +144,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     textAlign: 'center',
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 5,
-    fontSize: 16,
-  },
-  inputError: {
-    borderColor: '#FF3B30',
-  },
-  errorText: {
-    color: '#FF3B30',
-    fontSize: 12,
-    marginBottom: 10,
-    marginLeft: 5,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
+  registerButton: {
     marginTop: 10,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  linkButton: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  linkText: {
-    color: '#007AFF',
-    fontSize: 14,
   },
 });

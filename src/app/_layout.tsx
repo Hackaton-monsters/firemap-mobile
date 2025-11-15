@@ -1,3 +1,4 @@
+import '@/src/shared/localization/i18n';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Slot } from 'expo-router';
 

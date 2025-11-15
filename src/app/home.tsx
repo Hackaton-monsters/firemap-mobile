@@ -1,9 +1,12 @@
 import { useAuthStore } from '@/src/shared/stores/auth.store';
+import Button from '@/src/shared/uikit/Button/Button';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const router = useRouter();
@@ -15,24 +18,26 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome!</Text>
+      <Text style={styles.title}>{t('home.welcome')}</Text>
 
       {user && (
         <View style={styles.userInfo}>
-          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.label}>{t('home.email')}</Text>
           <Text style={styles.value}>{user.email}</Text>
 
-          <Text style={styles.label}>Nickname:</Text>
+          <Text style={styles.label}>{t('home.nickname')}</Text>
           <Text style={styles.value}>{user.nickname}</Text>
 
-          <Text style={styles.label}>Role:</Text>
+          <Text style={styles.label}>{t('home.role')}</Text>
           <Text style={styles.value}>{user.role}</Text>
         </View>
       )}
 
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText}>Logout</Text>
-      </TouchableOpacity>
+      <Button
+        title={t('home.logout')}
+        onPress={handleLogout}
+        variant="danger"
+      />
     </View>
   );
 }
@@ -66,17 +71,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 5,
-  },
-  logoutButton: {
-    backgroundColor: '#FF3B30',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    width: '100%',
-  },
-  logoutButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
   },
 });

@@ -1,25 +1,23 @@
 import { useLoginMutation } from '@/src/api/auth/hooks';
+import { validateEmail } from '@/src/shared/helpers/validation';
+import Button from '@/src/shared/uikit/Button/Button';
+import Input from '@/src/shared/uikit/Input/Input';
+import TextButton from '@/src/shared/uikit/TextButton/TextButton';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
-const validateEmail = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
 export default function LoginScreen() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -31,12 +29,12 @@ export default function LoginScreen() {
     setEmailError('');
 
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert(t('common.error'), t('auth.login.errors.fillAllFields'));
       return;
     }
 
     if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address');
+      setEmailError(t('auth.login.errors.invalidEmail'));
       return;
     }
 
@@ -47,7 +45,7 @@ export default function LoginScreen() {
           router.replace('/home');
         },
         onError: (error) => {
-          Alert.alert('Login Failed', error.message);
+          Alert.alert(t('auth.login.errors.loginFailed'), error.message);
         },
       }
     );
@@ -67,50 +65,42 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.formContainer}>
-      <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>{t('auth.login.title')}</Text>
 
-      <TextInput
-        style={[styles.input, emailError ? styles.inputError : null]}
-        placeholder="Email"
-        value={email}
-        onChangeText={(text) => {
-          setEmail(text);
-          setEmailError('');
-        }}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        editable={!loginMutation.isPending}
-      />
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+          <Input
+            placeholder={t('auth.login.email')}
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              setEmailError('');
+            }}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            editable={!loginMutation.isPending}
+            error={emailError}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        editable={!loginMutation.isPending}
-      />
+          <Input
+            placeholder={t('auth.login.password')}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            editable={!loginMutation.isPending}
+          />
 
-      <TouchableOpacity
-        style={[styles.button, loginMutation.isPending && styles.buttonDisabled]}
-        onPress={handleLogin}
-        disabled={loginMutation.isPending}
-      >
-        {loginMutation.isPending ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
-      </TouchableOpacity>
+          <Button
+            title={t('auth.login.loginButton')}
+            onPress={handleLogin}
+            isLoading={loginMutation.isPending}
+            disabled={loginMutation.isPending}
+            style={styles.loginButton}
+          />
 
-      <TouchableOpacity
-        style={styles.linkButton}
-        onPress={navigateToRegister}
-        disabled={loginMutation.isPending}
-      >
-        <Text style={styles.linkText}>Don't have an account? Register</Text>
-      </TouchableOpacity>
+          <TextButton
+            title={t('auth.login.noAccount')}
+            onPress={navigateToRegister}
+            disabled={loginMutation.isPending}
+          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -135,44 +125,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     textAlign: 'center',
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 5,
-    fontSize: 16,
-  },
-  inputError: {
-    borderColor: '#FF3B30',
-  },
-  errorText: {
-    color: '#FF3B30',
-    fontSize: 12,
-    marginBottom: 10,
-    marginLeft: 5,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
+  loginButton: {
     marginTop: 10,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  linkButton: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  linkText: {
-    color: '#007AFF',
-    fontSize: 14,
   },
 });
