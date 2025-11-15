@@ -8,10 +8,11 @@ export default {
         loginButton: 'Войти',
         noAccount: 'Нет аккаунта? Зарегистрироваться',
         errors: {
-          fillAllFields: 'Пожалуйста, заполните все поля',
-          invalidEmail: 'Пожалуйста, введите корректный email',
-          loginFailed: 'Ошибка входа',
-        },
+        fillAllFields: 'Пожалуйста, заполните все поля',
+        invalidEmail: 'Пожалуйста, введите действительный адрес электронной почты',
+        loginFailed: 'Ошибка входа',
+        invalidCredentials: 'Неверный email или пароль. Пожалуйста, попробуйте снова.',
+      },
       },
       register: {
         title: 'Регистрация',
@@ -21,11 +22,12 @@ export default {
         registerButton: 'Зарегистрироваться',
         haveAccount: 'Уже есть аккаунт? Войти',
         errors: {
-          fillAllFields: 'Пожалуйста, заполните все поля',
-          invalidEmail: 'Пожалуйста, введите корректный email',
-          passwordTooShort: 'Пароль должен содержать минимум 6 символов',
-          registrationFailed: 'Ошибка регистрации',
-        },
+        fillAllFields: 'Пожалуйста, заполните все поля',
+        invalidEmail: 'Пожалуйста, введите действительный адрес электронной почты',
+        passwordTooShort: 'Пароль должен содержать не менее 6 символов',
+        registrationFailed: 'Ошибка регистрации',
+        registrationError: 'Не удалось создать аккаунт. Email может быть уже использован.',
+      },
       },
     },
     tabs: {

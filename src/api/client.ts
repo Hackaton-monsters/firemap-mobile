@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://api.example.com";
+const API_BASE_URL = "http://5.75.233.110/api";
 
 type RequestOptions = RequestInit & {
   token?: string | null;

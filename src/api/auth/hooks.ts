@@ -37,25 +37,10 @@ export const useLoginMutation = () => {
 
   return useMutation<LoginResponse, Error, LoginPayload>({
     mutationFn: async (payload) => {
-      // Fake login implementation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-debugger
-      if (
-        payload.email === 'demo@email.com' &&
-        payload.password === 'password'
-      ) {
-        return {
-          token: 'fake-jwt-token-demo-user',
-          user: {
-            id: '1',
-            email: 'demo@email.com',
-            nickname: 'Demo User',
-            role: 'user' as const,
-          },
-        };
-      }
-
-      throw new Error('Invalid credentials');
+      return apiClient<LoginResponse>('/login', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
     },
     onSuccess: (data) => {
       setAuth(data.token, data.user);
@@ -68,22 +53,10 @@ export const useRegisterMutation = () => {
 
   return useMutation<RegisterResponse, Error, RegisterPayload>({
     mutationFn: async (payload) => {
-      // Fake registration implementation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      if (!payload.email || !payload.password || !payload.nickname) {
-        throw new Error('All fields are required');
-      }
-
-      return {
-        token: 'fake-jwt-token-' + Date.now(),
-        user: {
-          id: Date.now().toString(),
-          email: payload.email,
-          nickname: payload.nickname,
-          role: 'user' as const,
-        },
-      };
+      return apiClient<RegisterResponse>('/register', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
     },
     onSuccess: (data) => {
       setAuth(data.token, data.user);

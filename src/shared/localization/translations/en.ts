@@ -8,10 +8,11 @@ export default {
         loginButton: 'Login',
         noAccount: "Don't have an account? Register",
         errors: {
-          fillAllFields: 'Please fill in all fields',
-          invalidEmail: 'Please enter a valid email address',
-          loginFailed: 'Login Failed',
-        },
+        fillAllFields: 'Please fill in all fields',
+        invalidEmail: 'Please enter a valid email address',
+        loginFailed: 'Login Failed',
+        invalidCredentials: 'Invalid email or password. Please try again.',
+      },
       },
       register: {
         title: 'Register',
@@ -21,11 +22,12 @@ export default {
         registerButton: 'Register',
         haveAccount: 'Already have an account? Login',
         errors: {
-          fillAllFields: 'Please fill in all fields',
-          invalidEmail: 'Please enter a valid email address',
-          passwordTooShort: 'Password must be at least 6 characters',
-          registrationFailed: 'Registration Failed',
-        },
+        fillAllFields: 'Please fill in all fields',
+        invalidEmail: 'Please enter a valid email address',
+        passwordTooShort: 'Password must be at least 6 characters',
+        registrationFailed: 'Registration Failed',
+        registrationError: 'Unable to create account. Email may already be in use.',
+      },
       },
     },
     tabs: {

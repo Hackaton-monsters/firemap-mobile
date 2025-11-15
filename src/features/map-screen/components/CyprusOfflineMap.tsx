@@ -166,7 +166,6 @@ export function CyprusOfflineMap() {
     );
   }
 
-  console.log(location)
   return (
     <View style={styles.container}>
       <MapView

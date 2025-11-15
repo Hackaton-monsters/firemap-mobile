@@ -44,8 +44,11 @@ export default function LoginScreen() {
         onSuccess: () => {
           router.replace('/(main)/map');
         },
-        onError: (error) => {
-          Alert.alert(t('auth.login.errors.loginFailed'), error.message);
+        onError: () => {
+          Alert.alert(
+            t('auth.login.errors.loginFailed'),
+            t('auth.login.errors.invalidCredentials')
+          );
         },
       }
     );

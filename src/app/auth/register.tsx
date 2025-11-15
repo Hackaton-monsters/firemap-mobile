@@ -52,8 +52,11 @@ export default function RegisterScreen() {
         onSuccess: () => {
           router.replace('/(main)/map');
         },
-        onError: (error) => {
-          Alert.alert(t('auth.register.errors.registrationFailed'), error.message);
+        onError: () => {
+          Alert.alert(
+            t('auth.register.errors.registrationFailed'),
+            t('auth.register.errors.registrationError')
+          );
         },
       }
     );

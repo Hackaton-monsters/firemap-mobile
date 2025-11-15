@@ -8,10 +8,11 @@ export default {
         loginButton: 'Σύνδεση',
         noAccount: 'Δεν έχετε λογαριασμό; Εγγραφή',
         errors: {
-          fillAllFields: 'Παρακαλώ συμπληρώστε όλα τα πεδία',
-          invalidEmail: 'Παρακαλώ εισάγετε έγκυρη διεύθυνση email',
-          loginFailed: 'Η σύνδεση απέτυχε',
-        },
+        fillAllFields: 'Παρακαλώ συμπληρώστε όλα τα πεδία',
+        invalidEmail: 'Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email',
+        loginFailed: 'Αποτυχία Σύνδεσης',
+        invalidCredentials: 'Μη έγκυρο email ή κωδικός πρόσβασης. Παρακαλώ δοκιμάστε ξανά.',
+      },
       },
       register: {
         title: 'Εγγραφή',
@@ -21,11 +22,12 @@ export default {
         registerButton: 'Εγγραφή',
         haveAccount: 'Έχετε ήδη λογαριασμό; Σύνδεση',
         errors: {
-          fillAllFields: 'Παρακαλώ συμπληρώστε όλα τα πεδία',
-          invalidEmail: 'Παρακαλώ εισάγετε έγκυρη διεύθυνση email',
-          passwordTooShort: 'Ο κωδικός πρέπει να έχει τουλάχιστον 6 χαρακτήρες',
-          registrationFailed: 'Η εγγραφή απέτυχε',
-        },
+        fillAllFields: 'Παρακαλώ συμπληρώστε όλα τα πεδία',
+        invalidEmail: 'Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email',
+        passwordTooShort: 'Ο κωδικός πρόσβασης πρέπει να έχει τουλάχιστον 6 χαρακτήρες',
+        registrationFailed: 'Αποτυχία Εγγραφής',
+        registrationError: 'Αδυναμία δημιουργίας λογαριασμού. Το email μπορεί να χρησιμοποιείται ήδη.',
+      },
       },
     },
     tabs: {

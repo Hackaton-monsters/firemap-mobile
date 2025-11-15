@@ -12,7 +12,9 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.firemapmobile",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to show your position on the map."
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to show your position on the map.",
+        "NSAppTransportSecurity": { "NSAllowsArbitraryLoads": true },
+        "supportsTablet": false
       }
     },
     "android": {
@@ -25,10 +27,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.firemapmobile",
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ]
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     },
     "web": {
       "output": "static",
@@ -49,6 +48,17 @@
           }
         }
       ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "flipper": true
+          }
+        }
+      ],
       "expo-localization",
       [
         "expo-location",
@@ -59,11 +69,10 @@
       [
         "expo-asset",
         {
-          "assets": [
-            "./assets/tiles/cyprusmap.mbtiles"
-          ]
+          "assets": ["./assets/tiles/cyprusmap.mbtiles"]
         }
-      ]
+      ],
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true,
