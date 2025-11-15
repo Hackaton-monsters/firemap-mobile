@@ -17,6 +17,7 @@ Always use the following stack:
 ## General Principles
 
 1. All application code must live inside the `src` directory.
+
 2. All components must be written as **functional components**:
 
    ```ts
@@ -43,6 +44,7 @@ Always use the following stack:
   - Use optional chaining (?.) and nullish coalescing (??) operators
   - Prefer optional chaining (`?.`) over using `&&` for property access (`@typescript-eslint/prefer-optional-chain`)
   - Define guards inside `.guards.ts` files, ensure they have the correct prefix (e.g. guardIsUser)
+
 4.	Naming conventions:
 	-	Components and screens — PascalCase (LoginScreen, UserCard)
 	-	Helpers and regular functions — camelCase (formatDate, buildQueryParams)
@@ -52,6 +54,13 @@ Always use the following stack:
 	-	Use expo-localization and react-i18next to detect the device locale and region.
 	-	Avoid hard-coded user-facing strings inside components; route them through a localization layer.
 	-	Place shared localization utilities (e.g., helpers for picking language, formatting by locale) in src/shared/helpers or a dedicated src/shared/localization module.
+
+6. Micro animations:
+  -	Use Animated for animations.
+  -	Place shared animation utilities (e.g., common animation configs, hooks) in src/shared/helpers or a dedicated src/shared/animations module.
+  - Follow the Apple Human Interface Guidelines for animation design
+  - Use animations to provide feedback, enhance user experience, and guide user attention without overwhelming them.
+  - Ensure animations are smooth and performant across different devices.
 
 ### Project Structure
 

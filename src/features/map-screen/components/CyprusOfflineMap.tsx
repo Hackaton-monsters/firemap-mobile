@@ -1,10 +1,11 @@
 import {
   Camera,
   MapView,
+  PressEvent,
   UserLocation,
   type CameraRef,
   type Location as MapLibreLocation,
-  type MapViewRef
+  type MapViewRef,
 } from '@maplibre/maplibre-react-native';
 import { useAssets } from 'expo-asset';
 import * as Location from 'expo-location';
@@ -14,6 +15,7 @@ import {
   ActivityIndicator,
   Alert,
   Linking,
+  NativeSyntheticEvent,
   Platform,
   StyleSheet,
   Text,
@@ -26,11 +28,27 @@ import {
   isInCyprus
 } from '../helpers/map-bounds';
 import { createMapStyle } from '../helpers/map-style';
+import { AddMarkerButton } from './AddMarkerButton';
 import { CenterLocationButton } from './CenterLocationButton';
 import { OutsideCyprusBanner } from './OutsideCyprusBanner';
 import { PermissionBanner } from './PermissionBanner';
+import { TemporaryMarker } from './TemporaryMarker';
 
-export function CyprusOfflineMap() {
+export type SelectedPoint = {
+  longitude: number;
+  latitude: number;
+};
+
+type IProps = {
+  selectedPoint: SelectedPoint | null;
+  onPointSelect: (point: SelectedPoint | null) => void;
+  onAddPress: () => void;
+};
+
+const MIN_ZOOM_FOR_MARKER = 13;
+
+
+export function CyprusOfflineMap({ selectedPoint, onPointSelect, onAddPress }: IProps) {
   const { t } = useTranslation();
   const [assets, error] = useAssets([
     require('../../../../assets/tiles/cyprusmap.mbtiles'),
@@ -41,6 +59,7 @@ export function CyprusOfflineMap() {
     'granted' | 'denied' | 'undetermined'
   >('undetermined');
   const [isOutsideCyprus, setIsOutsideCyprus] = useState(false);
+  const [currentZoom, setCurrentZoom] = useState<number>(8);
   const cameraRef = useRef<CameraRef>(null);
   const mapRef = useRef<MapViewRef>(null);
 
@@ -116,27 +135,55 @@ export function CyprusOfflineMap() {
 
     try {
       const { latitude, longitude } = await mapRef.current.getCenter();
+      const zoom = await mapRef.current.getZoom();
+      setCurrentZoom(zoom);
 
-      if (!isInCyprus(longitude, latitude)) {
-        const [constrainedLng, constrainedLat] = constrainToCyprus(longitude, latitude);
-
-        cameraRef.current.flyTo({
-          center: {
-            longitude: constrainedLng,
-            latitude: constrainedLat,
-          },
-          duration: 300,
-        });
-      } else {
-        // The user is inside Cyprus; setCamera with actual center
-        // cameraRef.current.setCamera({
-        //   centerCoordinate: [lng, lat],
-        //   animationDuration: 300,
-        // });
+      if (isInCyprus(longitude, latitude)) {
+        return
       }
+
+      const [constrainedLng, constrainedLat] = constrainToCyprus(longitude, latitude);
+
+      cameraRef.current.flyTo({
+        center: {
+          longitude: constrainedLng,
+          latitude: constrainedLat,
+        },
+        duration: 300,
+      });
     } catch (err) {
       console.error('Failed to get map center', err);
     }
+  };
+
+  const handleMapPress = async (event: NativeSyntheticEvent<PressEvent>) => {
+    const { latitude, longitude } = event.nativeEvent;
+
+    if (!isInCyprus(longitude, latitude)) {
+      Alert.alert(
+        t('map.outOfBounds.title'),
+        t('map.outOfBounds.message'),
+        [{ text: 'OK' }]
+      );
+      return;
+    }
+
+    if (currentZoom < MIN_ZOOM_FOR_MARKER) {
+      if (cameraRef.current) {
+        cameraRef.current.flyTo({
+          center: { longitude, latitude },
+          zoom: MIN_ZOOM_FOR_MARKER + 1,
+          duration: 800,
+        });
+      }
+      return;
+    }
+
+    onPointSelect({ longitude, latitude });
+  };
+
+  const handleMarkerCancel = () => {
+    onPointSelect(null);
   };
 
   const mapStyle = useMemo(() => {
@@ -176,6 +223,7 @@ export function CyprusOfflineMap() {
         compass={true}
         attribution={false}
         onRegionDidChange={handleRegionDidChange}
+        onPress={handleMapPress}
       >
         <Camera
           ref={cameraRef}
@@ -192,9 +240,26 @@ export function CyprusOfflineMap() {
         {permissionStatus === 'granted' && (
           <UserLocation visible onUpdate={handleLocationChanged} />
         )}
+
+        {selectedPoint && (
+          <TemporaryMarker
+            longitude={selectedPoint.longitude}
+            latitude={selectedPoint.latitude}
+            onPress={handleMarkerCancel}
+          />
+        )}
       </MapView>
 
-      <CenterLocationButton onPress={handleCenterOnUserLocationPress} />
+      <AddMarkerButton
+        onAddPress={onAddPress}
+        onCancelPress={handleMarkerCancel}
+        visible={!!selectedPoint}
+      />
+
+      <CenterLocationButton
+        onPress={handleCenterOnUserLocationPress}
+        bottomOffset={selectedPoint ? 80 : 0}
+      />
 
       {isOutsideCyprus && permissionStatus === 'granted' && (
         <OutsideCyprusBanner />

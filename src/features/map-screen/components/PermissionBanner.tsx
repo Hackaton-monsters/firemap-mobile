@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type IProps = {
   onOpenSettings: () => void;
@@ -7,9 +8,10 @@ type IProps = {
 
 export const PermissionBanner = ({ onOpenSettings }: IProps) => {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={styles.banner}>
+    <View style={[styles.banner, { top: insets.top + 16 }]}>
       <Text style={styles.title}>{t('map.permissions.bannerTitle')}</Text>
       <Text style={styles.text}>{t('map.permissions.bannerMessage')}</Text>
       <TouchableOpacity style={styles.button} onPress={onOpenSettings}>
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 16,
     left: 16,
-    right: 80,
+    right: 16,
     backgroundColor: '#fff',
     padding: 16,
     borderRadius: 12,

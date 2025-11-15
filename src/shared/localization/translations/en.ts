@@ -39,9 +39,14 @@ export default {
       title: 'Map Screen',
       loading: 'Loading Cyprus map…',
       loadError: 'Failed to load Cyprus tiles',
+      addReport: 'Add',
       locationNotice: {
         title: 'Location Notice',
         message: 'You are currently outside Cyprus. This map only shows Cyprus region.',
+      },
+      outOfBounds: {
+        title: 'Out of Bounds',
+        message: 'You can only create reports within Cyprus.',
       },
       permissions: {
         title: 'Location Permission Required',
@@ -73,6 +78,22 @@ export default {
     },
     common: {
       error: 'Error',
+      cancel: 'Cancel',
+      submit: 'Submit',
+    },
+    report: {
+      createReport: 'Create Report',
+      incidentType: 'Incident Type',
+      fire: 'Fire',
+      rescue: 'Rescue',
+      comment: 'Comment',
+      commentPlaceholder: 'Describe the incident...',
+      error: 'Error',
+      commentTooShort: 'Comment must be at least 3 characters',
+      photos: 'Photos',
+      addPhoto: 'Add Photo',
+      photoPermissionTitle: 'Permission Required',
+      photoPermissionMessage: 'Please grant access to your photo library to attach images.',
     },
   },
 };

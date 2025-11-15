@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
   },
   secondary: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#ffffff',
     borderWidth: 1,
     borderColor: '#007AFF',
   },
