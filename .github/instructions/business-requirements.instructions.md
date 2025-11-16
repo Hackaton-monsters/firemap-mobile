@@ -1,8 +1,8 @@
-# Business Requirements – Fire & Rescue Coordination App
+# Business Requirements. FireGuard – Fire & Rescue Coordination App
 
 ## 1. Product Goal
 
-A mobile application for real-time reporting and coordination of **fire** and **rescue** incidents via a map with incident markers and marker-based chats.
+A mobile application "FireGuard" for real-time reporting and coordination of **fire** and **rescue** incidents via a map with incident markers and marker-based chats.
 
 The app helps users and authorities quickly identify danger zones and coordinate response.
 

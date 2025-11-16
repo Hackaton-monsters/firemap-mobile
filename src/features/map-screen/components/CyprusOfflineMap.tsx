@@ -81,7 +81,7 @@ export function CyprusOfflineMap({
   const [currentZoom, setCurrentZoom] = useState<number>(8);
   const mapRef = useRef<MapViewRef>(null);
 
-  const openSettings = () => {
+  const handleOpenSettingsPress = () => {
     Alert.alert(t('map.permissions.title'), t('map.permissions.message'), [
       { text: t('map.permissions.cancel'), style: 'cancel' },
       {
@@ -120,7 +120,7 @@ export function CyprusOfflineMap({
 
   const handleCenterOnUserLocationPress = () => {
     if (permissionStatus === 'denied') {
-      openSettings();
+      handleOpenSettingsPress();
       return;
     }
 
@@ -319,7 +319,7 @@ export function CyprusOfflineMap({
       )}
 
       {permissionStatus === 'denied' && (
-        <PermissionBanner onOpenSettings={openSettings} />
+        <PermissionBanner onOpenSettings={handleOpenSettingsPress} />
       )}
     </View>
   );

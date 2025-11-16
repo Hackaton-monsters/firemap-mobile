@@ -1,4 +1,4 @@
-# Firemap - Fire & Rescue Incident Coordination App
+# FireGuard - Fire & Rescue Incident Coordination App
 
 A mobile application that allows users to mark locations of fires and rescue incidents on a map, coordinate response, and communicate in real time via location-specific chats.
 
