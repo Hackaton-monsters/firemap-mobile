@@ -39,6 +39,7 @@ export const MarkerBottomSheet = ({
       enablePanDownToClose
       onClose={onClose}
       android_keyboardInputMode="adjustResize"
+      enableDynamicSizing={false}
     >
       <BottomSheetProvider value={{ isInsideBottomSheet: true }}>
         <BottomSheetView style={styles.contentContainer}>
