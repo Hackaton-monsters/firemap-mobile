@@ -62,6 +62,8 @@ export default {
       noMessages: 'Пока нет сообщений',
       typeMessage: 'Введите сообщение...',
       joinChat: 'Присоединиться к чату',
+      translate: 'Перевести',
+      translating: 'Перевод...',
       dateDividers: {
         today: 'Сегодня',
         yesterday: 'Вчера',

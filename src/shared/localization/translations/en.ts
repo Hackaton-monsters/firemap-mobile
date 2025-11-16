@@ -62,6 +62,8 @@ export default {
       noMessages: 'No messages yet',
       typeMessage: 'Type a message...',
       joinChat: 'Join Chat',
+      translate: 'Translate',
+      translating: 'Translating...',
       dateDividers: {
         today: 'Today',
         yesterday: 'Yesterday',

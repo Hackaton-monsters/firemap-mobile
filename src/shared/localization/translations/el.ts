@@ -62,6 +62,8 @@ export default {
       noMessages: 'Δεν υπάρχουν μηνύματα ακόμα',
       typeMessage: 'Γράψτε ένα μήνυμα...',
       joinChat: 'Συμμετοχή στη συνομιλία',
+      translate: 'Μετάφραση',
+      translating: 'Μετάφραση...',
       dateDividers: {
         today: 'Σήμερα',
         yesterday: 'Χθες',

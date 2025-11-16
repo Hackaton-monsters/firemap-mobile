@@ -1,16 +1,9 @@
-import type { DisplayMessage, PendingMessage } from '@/src/api/chat/types';
-import { Colors } from '@/src/shared/constants/colors';
+import type { ChatMessage, ChatUser, DisplayMessage, PendingMessage } from '@/src/api/chat/types';
 import { useMemo } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import DateDivider from './DateDivider';
+import MessageBubble from './MessageBubble';
 import PendingMessageBubble from './PendingMessageBubble';
-
-const formatTime = (dateString: string): string => {
-  const date = new Date(dateString);
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-};
 
 const isSameDay = (date1: Date, date2: Date): boolean => {
   return (
@@ -20,20 +13,22 @@ const isSameDay = (date1: Date, date2: Date): boolean => {
   );
 };
 
+type MessagePosition = 'single' | 'first' | 'middle' | 'last';
+
 type MessageItem = 
-  | { type: 'message'; data: DisplayMessage }
+  | { type: 'message'; data: DisplayMessage; position: MessagePosition }
   | { type: 'divider'; date: Date; id: string };
 
 type IProps = {
   messages: DisplayMessage[];
-  currentUserId?: number;
+  currentUser: ChatUser | null;
+  chatId: number;
 };
 
-export const ChatMessageList = ({ messages, currentUserId }: IProps) => {
-  // Insert date dividers between messages
+export const ChatMessageList = ({ messages, currentUser, chatId }: IProps) => {
+  // Insert date dividers between messages and calculate positions for grouping
   const messagesWithDividers = useMemo(() => {
     const items: MessageItem[] = [];
-    let lastDate: Date | null = null;
 
     // Process messages in reverse because list is inverted
     messages.forEach((message, index) => {
@@ -42,8 +37,35 @@ export const ChatMessageList = ({ messages, currentUserId }: IProps) => {
         ? new Date(message.created_at)
         : new Date();
 
-      // Add message first
-      items.push({ type: 'message', data: message });
+      // Determine position based on adjacent messages from same user
+      // Note: list is inverted, so "previous" message appears BELOW, "next" appears ABOVE
+      let position: MessagePosition = 'single';
+      
+      if (!('isPending' in message)) {
+        const prevMessage = index > 0 ? messages[index - 1] : null;
+        const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
+
+        const isSameUserAsPrev = prevMessage && !('isPending' in prevMessage) && 
+          prevMessage.user.id === message.user.id;
+        const isSameUserAsNext = nextMessage && !('isPending' in nextMessage) && 
+          nextMessage.user.id === message.user.id;
+
+        // In inverted list: prev is OLDER (below), next is NEWER (above)
+        // first = oldest in group (top visually = rounded bottom in array)
+        // last = newest in group (bottom visually = rounded top in array)
+        if (isSameUserAsPrev && isSameUserAsNext) {
+          position = 'middle';
+        } else if (isSameUserAsPrev) {
+          // Has older message from same user below, but not above = visually at top of group
+          position = 'first';
+        } else if (isSameUserAsNext) {
+          // Has newer message from same user above, but not below = visually at bottom of group
+          position = 'last';
+        }
+      }
+
+      // Add message with position
+      items.push({ type: 'message', data: message, position });
 
       // Check if we need a divider AFTER this message
       // (which will appear ABOVE it in the inverted list)
@@ -79,24 +101,14 @@ export const ChatMessageList = ({ messages, currentUserId }: IProps) => {
       return <PendingMessageBubble text={pendingMsg.text} user={pendingMsg.user} />;
     }
 
-    const isOwnMessage = currentUserId === message.user.id;
-
+    // Regular message - use MessageBubble component
     return (
-      <View style={[styles.messageContainer, isOwnMessage && styles.ownMessageContainer]}>
-        {!isOwnMessage && (
-          <Text style={styles.username}>{message.user.nickname}</Text>
-        )}
-        <View style={[styles.messageBubble, isOwnMessage && styles.ownMessageBubble]}>
-          <Text style={[styles.messageText, isOwnMessage && styles.ownMessageText]}>
-            {message.text}
-          </Text>
-          {'created_at' in message && message.created_at && (
-            <Text style={[styles.timestamp, isOwnMessage && styles.ownTimestamp]}>
-              {formatTime(message.created_at)}
-            </Text>
-          )}
-        </View>
-      </View>
+      <MessageBubble 
+        message={message as ChatMessage} 
+        currentUser={currentUser} 
+        chatId={chatId}
+        position={item.position}
+      />
     );
   };
 
@@ -118,46 +130,5 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-  },
-  messageContainer: {
-    marginVertical: 4,
-    alignItems: 'flex-start',
-  },
-  ownMessageContainer: {
-    alignItems: 'flex-end',
-  },
-  username: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    marginBottom: 4,
-    marginLeft: 12,
-    fontWeight: '500',
-  },
-  messageBubble: {
-    maxWidth: '75%',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 16,
-    backgroundColor: Colors.gray200,
-  },
-  ownMessageBubble: {
-    backgroundColor: Colors.primary,
-  },
-  messageText: {
-    fontSize: 15,
-    color: Colors.textPrimary,
-    lineHeight: 20,
-  },
-  ownMessageText: {
-    color: Colors.white,
-  },
-  timestamp: {
-    fontSize: 10,
-    color: Colors.textTertiary,
-    marginTop: 4,
-    alignSelf: 'flex-end',
-  },
-  ownTimestamp: {
-    color: Colors.white + 'CC',
   },
 });

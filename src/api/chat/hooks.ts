@@ -3,11 +3,14 @@ import { useAuthStore } from "../../shared/stores/auth.store";
 import { apiClient } from "../client";
 import type {
   ChatHistoryResponse,
+  ChatMessage,
   JoinChatPayload,
   JoinChatResponse,
   PendingMessage,
   SendMessagePayload,
   SendMessageResponse,
+  TranslateMessagePayload,
+  TranslateMessageResponse,
 } from "./types";
 
 export const useChatHistoryQuery = (chatId: number, enabled: boolean = true) => {
@@ -106,6 +109,40 @@ export const useJoinChatMutation = () => {
       return apiClient<JoinChatResponse>(`/chat/${payload.chatId}/join`, {
         method: "POST",
         token,
+      });
+    },
+  });
+};
+
+export const useTranslateMessageMutation = (chatId: number) => {
+  const token = useAuthStore((state) => state.token);
+  const queryClient = useQueryClient();
+
+  return useMutation<TranslateMessageResponse, Error, TranslateMessagePayload>({
+    mutationFn: async (payload) => {
+      return apiClient<TranslateMessageResponse>(
+        `/message/${payload.messageId}/translate/?language=${payload.language}`,
+        {
+          method: "GET",
+          token,
+        }
+      );
+    },
+    onSuccess: (response) => {
+      // Update the message in cache with translation
+      queryClient.setQueryData<ChatHistoryResponse>(["chat", chatId, "history"], (old) => {
+        if (!old) return old;
+
+        return {
+          ...old,
+          messages: old.messages.map((msg) => {
+            if ('isPending' in msg) return msg;
+            if (msg.id === response.id) {
+              return { ...msg, translation: response.translatedText } as ChatMessage;
+            }
+            return msg;
+          }),
+        };
       });
     },
   });

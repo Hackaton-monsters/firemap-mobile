@@ -10,6 +10,7 @@ export type ChatMessage = {
   text: string;
   user: ChatUser;
   created_at: string;
+  translation?: string;
 };
 
 export type PendingMessage = {
@@ -59,4 +60,14 @@ export type WebSocketMessage = {
   message?: ChatMessage;
   userId?: string;
   username?: string;
+};
+
+export type TranslateMessagePayload = {
+  messageId: number;
+  language: string;
+};
+
+export type TranslateMessageResponse = {
+  id: number;
+  translatedText: string;
 };

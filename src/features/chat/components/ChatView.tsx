@@ -1,10 +1,10 @@
 import { useChatHistoryQuery } from '@/src/api/chat/hooks';
-import type { DisplayMessage } from '@/src/api/chat/types';
+import type { ChatUser, DisplayMessage } from '@/src/api/chat/types';
 import { Colors } from '@/src/shared/constants/colors';
 import { chatWebSocketService, useChatWebSocket } from '@/src/shared/services/chat-websocket.service';
 import { useAuthStore } from '@/src/shared/stores/auth.store';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { ChatInput } from './ChatInput';
@@ -25,6 +25,17 @@ export const ChatView = ({ chatId, onJoinSuccess }: IProps) => {
   const queryClient = useQueryClient();
   const { data, isLoading } = useChatHistoryQuery(chatId, true);
   const { connect, disconnect } = useChatWebSocket();
+
+  // Map auth store user to ChatUser type
+  const chatUser: ChatUser | null = useMemo(() => {
+    if (!currentUser) return null;
+    return {
+      id: currentUser.id,
+      email: currentUser.email,
+      nickname: currentUser.nickname,
+      role: currentUser.role === 'gov' ? 'government' : 'user',
+    };
+  }, [currentUser]);
 
   useEffect(() => {
     connect();
@@ -65,7 +76,7 @@ export const ChatView = ({ chatId, onJoinSuccess }: IProps) => {
             <Text style={styles.emptyText}>{t('chats.noMessages')}</Text>
           </View>
         ) : (
-          <ChatMessageList messages={messages} currentUserId={currentUser?.id} />
+          <ChatMessageList messages={messages} currentUser={chatUser} chatId={chatId} />
         )}
       </View>
 
