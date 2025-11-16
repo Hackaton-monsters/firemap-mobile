@@ -1,7 +1,7 @@
 import type { Marker } from '@/src/api/reports/types';
 import { TabbedContent } from '@/src/shared/components/TabbedContent';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ChatView } from '../../chat/components';
 import { MarkerDetailsContent } from './MarkerDetailsContent';
 import { MarkerHeader } from './MarkerHeader';
@@ -21,7 +21,7 @@ export const MarkerContent = ({
   onNavigateToMarkerPress,
 }: IProps) => {
   return (
-    <>
+    <View style={[{ flex: 1 }]}>
       <MarkerHeader marker={marker} onNavigateToMarkerPress={onNavigateToMarkerPress} />
 
       <TabbedContent
@@ -43,7 +43,7 @@ export const MarkerContent = ({
           );
         }}
       />
-    </>
+    </View>
   );
 };
 

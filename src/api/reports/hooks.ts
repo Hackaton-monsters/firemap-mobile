@@ -17,6 +17,7 @@ export const useMarkersQuery = () => {
     queryFn: async () => {
       return apiClient<MarkersResponse>("/marker/all", { token });
     },
+    refetchInterval: 10000, // Refetch every 10 seconds
   });
 };
 

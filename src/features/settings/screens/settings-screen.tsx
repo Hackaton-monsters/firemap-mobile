@@ -1,4 +1,3 @@
-import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
 import { useAuthStore } from '@/src/shared/stores/auth.store';
 import Button from '@/src/shared/uikit/Button/Button';
 import { useRouter } from 'expo-router';
@@ -12,7 +11,6 @@ export function SettingsScreen() {
   const user = useAuthStore((state) => state.user);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const router = useRouter();
-  const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
   const handleLogout = () => {
@@ -23,7 +21,7 @@ export function SettingsScreen() {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={[styles.content, { paddingBottom: tabBarHeight, paddingTop: insets.top }]}
+      contentContainerStyle={[styles.content, { paddingTop: insets.top }]}
     >
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('settings.profile.title')}</Text>
@@ -38,11 +36,6 @@ export function SettingsScreen() {
             <View style={styles.infoRow}>
               <Text style={styles.label}>{t('settings.profile.nickname')}</Text>
               <Text style={styles.value}>{user.nickname}</Text>
-            </View>
-
-            <View style={styles.infoRow}>
-              <Text style={styles.label}>{t('settings.profile.role')}</Text>
-              <Text style={styles.value}>{user.role}</Text>
             </View>
           </View>
         )}

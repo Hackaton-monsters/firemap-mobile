@@ -39,7 +39,7 @@ export function ChatDetailScreen() {
           animation: 'slide_from_right',
         }}
       />
-      <View style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <View style={styles.header}>
           <Pressable style={styles.backButton} onPress={router.back}>
             <Ionicons name="arrow-back" size={24} color={Colors.textPrimary} />
@@ -53,14 +53,10 @@ export function ChatDetailScreen() {
           renderContent={(activeTab) => {
             if (activeTab === 'chat') {
               return (
-                <KeyboardAvoidingView
-                  style={{ flex: 1 }}
-                  behavior="padding"
-                  keyboardVerticalOffset={0}
-                >
+                <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" keyboardVerticalOffset={170 + insets.bottom}>
                   <ChatView
                     chatId={chatId}
-                    isJoined={true}
+                    isJoined
                   />
                 </KeyboardAvoidingView>
               );

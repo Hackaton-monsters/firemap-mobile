@@ -6,7 +6,7 @@ import { useAuthStore } from '@/src/shared/stores/auth.store';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ChatInput } from './ChatInput';
 import { ChatMessageList } from './ChatMessageList';
 import ChatSkeleton from './ChatSkeleton';
@@ -69,9 +69,11 @@ export const ChatView = ({ chatId, isJoined }: IProps) => {
   return (
     <View style={styles.container}>
       {messages.length === 0 ? (
-        <View style={styles.centered}>
-          <Text style={styles.emptyText}>{t('chats.noMessages')}</Text>
-        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.centered}>
+            <Text style={styles.emptyText}>{t('chats.noMessages')}</Text>
+          </View>
+        </ScrollView>
       ) : (
         <ChatMessageList messages={messages} currentUser={chatUser} chatId={chatId} />
       )}

@@ -1,5 +1,6 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Colors } from '../../../shared/constants/colors';
+import { AdaptiveTextInput } from '../../../shared/uikit/AdaptiveTextInput/AdaptiveTextInput';
 
 type IProps = {
   value: string;
@@ -19,7 +20,7 @@ export const CommentInput = ({
   return (
     <View style={styles.container}>
       {error && <Text style={styles.errorText}>{error}</Text>}
-      <TextInput
+      <AdaptiveTextInput
         style={[styles.input, error && styles.inputError]}
         value={value}
         onChangeText={onChangeText}

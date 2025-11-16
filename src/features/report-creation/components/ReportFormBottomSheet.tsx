@@ -1,3 +1,4 @@
+import { BottomSheetProvider } from '@/src/shared/contexts/BottomSheetContext';
 import { StyledBottomSheet } from '@/src/shared/uikit/BottomSheet/StyledBottomSheet';
 import type BottomSheet from '@gorhom/bottom-sheet';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -36,17 +37,22 @@ export const ReportFormBottomSheet = ({
       index={-1}
       enablePanDownToClose
       onClose={onClose}
+      
     >
-      <BottomSheetScrollView showsVerticalScrollIndicator={false}>
-        {visible && (
-          <ReportForm
-            latitude={latitude}
-            longitude={longitude}
-            onClose={onClose}
-            onSuccess={onSuccess}
-          />
-        )}
-      </BottomSheetScrollView>
+      <BottomSheetProvider value={{ isInsideBottomSheet: true }}>
+        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+
+          {visible && (
+            <ReportForm
+              latitude={latitude}
+              longitude={longitude}
+              onClose={onClose}
+              onSuccess={onSuccess}
+            />
+          )}
+
+        </BottomSheetScrollView>
+      </BottomSheetProvider>
     </StyledBottomSheet>
   );
 };

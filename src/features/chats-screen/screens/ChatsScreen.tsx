@@ -2,7 +2,6 @@ import { useAllChatsQuery } from '@/src/api/chat/hooks';
 import type { ChatListItem as ChatListItemType } from '@/src/api/chat/types';
 import { Colors } from '@/src/shared/constants/colors';
 import { serializeChatListItem } from '@/src/shared/helpers/router-params-serializer';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
@@ -16,7 +15,6 @@ import { ChatListItem, ChatListSeparator, EmptyChatsState } from '../components'
 export const ChatsScreen = () => {
   const router = useRouter();
   const { data, isLoading } = useAllChatsQuery();
-  const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
   const chats = data?.chats || [];
@@ -39,8 +37,9 @@ export const ChatsScreen = () => {
   if (chats.length === 0) {
     return <EmptyChatsState />;
   }
+
   return (
-    <View style={[styles.container, { paddingBottom: tabBarHeight, paddingTop: insets.top }]}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <FlatList
         data={chats}
         renderItem={({ item }) => (

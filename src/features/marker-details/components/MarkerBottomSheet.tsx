@@ -1,5 +1,5 @@
 import type { Marker } from '@/src/api/reports/types';
-import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
+import { BottomSheetProvider } from '@/src/shared/contexts/BottomSheetContext';
 import { StyledBottomSheet } from '@/src/shared/uikit/BottomSheet/StyledBottomSheet';
 import type BottomSheet from '@gorhom/bottom-sheet';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
@@ -23,7 +23,6 @@ export const MarkerBottomSheet = ({
   onNavigateToMarkerPress,
 }: IProps) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const tabBarHeight = useBottomTabBarHeight();
 
   useEffect(() => {
     if (visible && marker) {
@@ -39,18 +38,18 @@ export const MarkerBottomSheet = ({
       index={-1}
       enablePanDownToClose
       onClose={onClose}
-      keyboardBehavior="interactive"
-      keyboardBlurBehavior="restore"
       android_keyboardInputMode="adjustResize"
     >
-      <BottomSheetView style={[styles.contentContainer, { paddingBottom: tabBarHeight }]}>
-        {visible && marker && (
-          <MarkerContent
-            marker={marker}
-            onNavigateToMarkerPress={onNavigateToMarkerPress}
-          />
-        )}
-      </BottomSheetView>
+      <BottomSheetProvider value={{ isInsideBottomSheet: true }}>
+        <BottomSheetView style={styles.contentContainer}>
+          {visible && marker && (
+            <MarkerContent
+              marker={marker}
+              onNavigateToMarkerPress={onNavigateToMarkerPress}
+            />
+          )}
+        </BottomSheetView>
+      </BottomSheetProvider>
     </StyledBottomSheet>
   );
 };

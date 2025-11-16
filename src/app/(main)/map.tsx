@@ -4,14 +4,12 @@ import { useMapScreen } from '@/src/features/map-screen/hooks/useMapScreen';
 import { MarkerBottomSheet } from '@/src/features/marker-details/components/MarkerBottomSheet';
 import { ReportFormBottomSheet } from '@/src/features/report-creation/components/ReportFormBottomSheet';
 import { ReportSuccessNotice } from '@/src/features/report-creation/components/ReportSuccessNotice';
-import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
 import { useMapNavigationStore } from '@/src/shared/stores/map-navigation.store';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 
 export default function MapScreen() {
-  const tabBarHeight = useBottomTabBarHeight();
   const { data: markersData, refetch: refetchMarkers } = useMarkersQuery();
   const { pendingMarker, setPendingMarker } = useMapNavigationStore();
 
@@ -46,7 +44,7 @@ export default function MapScreen() {
     : null;
 
   return (
-    <View style={[styles.container, { paddingBottom: tabBarHeight }]}>
+    <View style={styles.container}>
       <CyprusOfflineMap
         cameraRef={cameraRef}
         selectedPoint={selectedPoint}

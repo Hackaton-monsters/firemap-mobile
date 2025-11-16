@@ -1,9 +1,10 @@
 import { useSendMessageMutation } from '@/src/api/chat/hooks';
 import { Colors } from '@/src/shared/constants/colors';
+import { AdaptiveTextInput } from '@/src/shared/uikit/AdaptiveTextInput/AdaptiveTextInput';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
 type IProps = {
   chatId: number;
@@ -33,7 +34,7 @@ export const ChatInput = ({ chatId }: IProps) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
+      <AdaptiveTextInput
         style={styles.input}
         placeholder={t('chats.typeMessage')}
         placeholderTextColor={Colors.textTertiary}
