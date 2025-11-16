@@ -128,6 +128,13 @@ export default {
       addPhoto: 'Add Photo',
       photoPermissionTitle: 'Permission Required',
       photoPermissionMessage: 'Please grant access to your photo library to attach images.',
+      cameraPermissionTitle: 'Camera Permission Required',
+      cameraPermissionMessage: 'Please grant camera permission to take photos.',
+      photoSource: {
+        takePhoto: 'Take Photo',
+        chooseFromGallery: 'Choose from Gallery',
+        cancel: 'Cancel',
+      },
       confirmClose: {
         title: 'Discard Report?',
         message: 'You have unsaved changes. Are you sure you want to discard this report?',

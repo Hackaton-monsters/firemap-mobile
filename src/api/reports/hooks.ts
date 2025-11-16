@@ -64,13 +64,13 @@ export const useUploadPhotoMutation = () => {
   >({
     mutationFn: async ({ uri, name, type }) => {
       const formData = new FormData();
-      formData.append("photo", {
+      formData.append("image", {
         uri,
         name,
         type,
       } as any);
 
-      const response = await fetch("http://5.75.233.110/api/photos", {
+      const response = await fetch("http://5.75.233.110/api/image/upload", {
         method: "POST",
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -80,9 +80,9 @@ export const useUploadPhotoMutation = () => {
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({
-          message: "Failed to upload photo",
+          error: "Failed to upload image",
         }));
-        throw new Error(error.message || `HTTP ${response.status}`);
+        throw new Error(error.error || `HTTP ${response.status}`);
       }
 
       return response.json();

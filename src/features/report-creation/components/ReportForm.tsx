@@ -32,7 +32,8 @@ export const ReportForm = ({ latitude, longitude, onClose, onSuccess }: IProps) 
 
   const {
     photos,
-    handlePickImage,
+    handlePickFromGallery,
+    handleTakePhoto,
     handleRemovePhoto,
     hasUploadingPhotos,
     hasPhotoErrors,
@@ -41,6 +42,8 @@ export const ReportForm = ({ latitude, longitude, onClose, onSuccess }: IProps) 
     maxPhotos: MAX_PHOTOS,
     photoPermissionTitle: t('report.photoPermissionTitle'),
     photoPermissionMessage: t('report.photoPermissionMessage'),
+    cameraPermissionTitle: t('report.cameraPermissionTitle'),
+    cameraPermissionMessage: t('report.cameraPermissionMessage'),
   });
 
   const isSubmitting = createMarkerMutation.isPending;
@@ -65,7 +68,7 @@ export const ReportForm = ({ latitude, longitude, onClose, onSuccess }: IProps) 
     } catch (error) {
       Alert.alert(
         t('report.error'),
-        error instanceof Error ? error.message : t('report.submitFailed')
+        t('report.submitFailed')
       );
     }
   };
@@ -106,7 +109,8 @@ export const ReportForm = ({ latitude, longitude, onClose, onSuccess }: IProps) 
         <PhotoUploader
           photos={photos}
           maxPhotos={MAX_PHOTOS}
-          onAddPhoto={handlePickImage}
+          onTakePhoto={handleTakePhoto}
+          onPickFromGallery={handlePickFromGallery}
           onRemovePhoto={handleRemovePhoto}
           addPhotoLabel={t('report.addPhoto')}
           disabled={isFormDisabled}

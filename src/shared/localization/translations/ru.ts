@@ -127,6 +127,13 @@ export default {
       addPhoto: 'Добавить фото',
       photoPermissionTitle: 'Требуется разрешение',
       photoPermissionMessage: 'Пожалуйста, предоставьте доступ к вашей фотогалерее для прикрепления изображений.',
+      cameraPermissionTitle: 'Требуется доступ к камере',
+      cameraPermissionMessage: 'Пожалуйста, предоставьте доступ к камере для съемки фотографий.',
+      photoSource: {
+        takePhoto: 'Сделать фото',
+        chooseFromGallery: 'Выбрать из галереи',
+        cancel: 'Отмена',
+      },
     },
   },
 };

@@ -5,20 +5,21 @@ import CircularProgress from '../../../shared/uikit/CircularProgress/CircularPro
 
 type PhotoState = {
   uri: string;
-  id?: string;
+  id?: number;
   uploading: boolean;
   error?: string;
 };
 
 type IProps = {
   photo: PhotoState;
+  onPress?: () => void;
   onDelete: () => void;
   disabled?: boolean;
 };
 
-export const PhotoPreview = ({ photo, onDelete, disabled = false }: IProps) => {
+export const PhotoPreview = ({ photo, onPress, onDelete, disabled = false }: IProps) => {
   return (
-    <View style={styles.photoItem}>
+    <Pressable style={styles.photoItem} onPress={onPress} disabled={disabled || photo.uploading}>
       <Image source={{ uri: photo.uri }} style={styles.photoImage} />
       
       {photo.uploading && (
@@ -47,7 +48,7 @@ export const PhotoPreview = ({ photo, onDelete, disabled = false }: IProps) => {
           <Ionicons name="close" size={16} color={Colors.white} />
         </Pressable>
       )}
-    </View>
+    </Pressable>
   );
 };
 

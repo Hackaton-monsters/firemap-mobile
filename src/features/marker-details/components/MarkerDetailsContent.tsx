@@ -1,34 +1,73 @@
 import type { Marker, Report } from '@/src/api/reports/types';
+import { PhotoGallery } from '@/src/shared/components/PhotoGallery/PhotoGallery';
+import { PhotoThumbnail } from '@/src/shared/components/PhotoThumbnail/PhotoThumbnail';
 import { Colors } from '@/src/shared/constants/colors';
+import { getCloudinaryFullSize } from '@/src/shared/helpers/cloudinary';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 const ReportCard = ({ report, markerType }: { report: Report; markerType: 'fire' | 'rescue' }) => {
+  const [galleryVisible, setGalleryVisible] = useState(false);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+
   const iconName = markerType === 'fire' ? 'local-fire-department' : 'health-and-safety';
   const iconColor = markerType === 'fire' ? Colors.danger : Colors.warning;
 
+  const handlePhotoPress = (index: number) => {
+    setSelectedPhotoIndex(index);
+    setGalleryVisible(true);
+  };
+
+  // Optimize photos for fullscreen gallery viewing
+  const fullSizePhotos = report.photos?.map(url => getCloudinaryFullSize(url, 1200)) || [];
+  const previewSizePhotos = report.photos?.map(url => getCloudinaryFullSize(url, 200)) || [];
+
   return (
-    <View style={styles.reportCard}>
-      <View style={styles.reportHeader}>
-        <View style={[styles.reportIcon, { backgroundColor: iconColor }]}>
-          <MaterialIcons name={iconName} size={20} color="white" />
+    <>
+      <View style={styles.reportCard}>
+        <View style={styles.reportHeader}>
+          <View style={[styles.reportIcon, { backgroundColor: iconColor }]}>
+            <MaterialIcons name={iconName} size={20} color="white" />
+          </View>
+          <View style={styles.reportHeaderText}>
+            <Text style={styles.reportType}>{markerType === 'fire' ? 'Fire' : 'Rescue'}</Text>
+            <Text style={styles.reportDate}>Report #{report.id}</Text>
+          </View>
         </View>
-        <View style={styles.reportHeaderText}>
-          <Text style={styles.reportType}>{markerType === 'fire' ? 'Fire' : 'Rescue'}</Text>
-          <Text style={styles.reportDate}>Report #{report.id}</Text>
-        </View>
+
+        {report.comment && (
+          <Text style={styles.reportComment}>{report.comment}</Text>
+        )}
+
+        {previewSizePhotos && previewSizePhotos.length > 0 && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.photosContainer}
+            contentContainerStyle={styles.photosContent}
+          >
+            {previewSizePhotos.map((photoUrl, index) => (
+              <PhotoThumbnail
+                key={photoUrl}
+                photoUrl={photoUrl}
+                onPress={() => handlePhotoPress(index)}
+                size={100}
+              />
+            ))}
+          </ScrollView>
+        )}
       </View>
 
-      {report.comment && (
-        <Text style={styles.reportComment}>{report.comment}</Text>
+      {previewSizePhotos && previewSizePhotos.length > 0 && (
+        <PhotoGallery
+          photos={fullSizePhotos}
+          initialIndex={selectedPhotoIndex}
+          visible={galleryVisible}
+          onClose={() => setGalleryVisible(false)}
+        />
       )}
-
-      {report.photos && report.photos.length > 0 && (
-        <View style={styles.photosInfo}>
-          <Text style={styles.photosText}>{report.photos.length} photo(s) attached</Text>
-        </View>
-      )}
-    </View>
+    </>
   );
 };
 
@@ -99,6 +138,14 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     lineHeight: 20,
     marginTop: 4,
+  },
+  photosContainer: {
+    marginTop: 12,
+    marginHorizontal: -12,
+  },
+  photosContent: {
+    paddingHorizontal: 12,
+    gap: 8,
   },
   photosInfo: {
     marginTop: 12,

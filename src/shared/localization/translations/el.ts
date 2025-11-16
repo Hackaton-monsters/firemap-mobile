@@ -127,6 +127,13 @@ export default {
       addPhoto: 'Προσθήκη φωτογραφίας',
       photoPermissionTitle: 'Απαιτείται άδεια',
       photoPermissionMessage: 'Παρακαλώ δώστε πρόσβαση στη βιβλιοθήκη φωτογραφιών σας για να επισυνάψετε εικόνες.',
+      cameraPermissionTitle: 'Απαιτείται άδεια κάμερας',
+      cameraPermissionMessage: 'Παρακαλώ δώστε πρόσβαση στην κάμερα για τη λήψη φωτογραφιών.',
+      photoSource: {
+        takePhoto: 'Λήψη φωτογραφίας',
+        chooseFromGallery: 'Επιλογή από τη βιβλιοθήκη',
+        cancel: 'Ακύρωση',
+      },
     },
   },
 };

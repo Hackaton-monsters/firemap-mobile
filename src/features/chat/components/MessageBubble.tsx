@@ -4,6 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { getLocales } from 'expo-localization';
 import { memo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { MessageBubbleAvatar } from './MessageBubbleAvatar';
 
 type MessagePosition = 'single' | 'first' | 'middle' | 'last';
 
@@ -38,20 +39,15 @@ const MessageBubble = ({ message, currentUser, chatId, position = 'single' }: IP
     }
   };
 
-  const showAvatar = position === 'single' || position === 'first';
+  const showAvatar = !isCurrentUser && (position === 'single' || position === 'first');
   const showNickname = position === 'single' || position === 'first';
 
   return (
     <View style={[styles.container, isCurrentUser && styles.containerRight]}>
-      {!isCurrentUser && (
-        <View style={[styles.avatar, { backgroundColor: showAvatar ? avatarColor : 'transparent', marginTop: 18 }]}>
-          {showAvatar && (
-            <Text style={styles.avatarText}>
-              {message.user.nickname.charAt(0).toUpperCase()}
-            </Text>
-          )}
-        </View>
+      {showAvatar && (
+        <MessageBubbleAvatar nickname={message.user.nickname} avatarColor={avatarColor} />
       )}
+
       <View style={styles.content}>
         {!isCurrentUser && showNickname && (
           <Text style={styles.nickname}>{message.user.nickname}</Text>
@@ -174,20 +170,6 @@ const styles = StyleSheet.create({
   },
   containerRight: {
     justifyContent: 'flex-end',
-  },
-  avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 8,
-    marginTop: 4,
-  },
-  avatarText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '600',
   },
   content: {
     maxWidth: '70%',

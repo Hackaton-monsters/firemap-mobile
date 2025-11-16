@@ -34,8 +34,6 @@ const PendingMessageBubble = ({ text, user }: IProps) => {
     outputRange: [-200, 200],
   });
 
-  const avatarColor = getAvatarColor(user.id);
-
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -62,11 +60,6 @@ const PendingMessageBubble = ({ text, user }: IProps) => {
           </LinearGradient>
           <Text style={styles.text}>{text}</Text>
         </View>
-      </View>
-      <View style={[styles.avatar, { backgroundColor: avatarColor }]}>
-        <Text style={styles.avatarText}>
-          {user.nickname.charAt(0).toUpperCase()}
-        </Text>
       </View>
     </View>
   );
