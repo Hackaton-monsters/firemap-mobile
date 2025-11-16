@@ -1,4 +1,5 @@
 import { Marker } from '@/src/api/reports/types';
+import { Colors } from '@/src/shared/constants/colors';
 import { feature, featureCollection } from '@/src/shared/helpers/turf-feature';
 import { PressEventWithFeatures, ShapeSource, SymbolLayer, SymbolLayerStyle } from '@maplibre/maplibre-react-native';
 import { NativeSyntheticEvent } from 'react-native';
@@ -78,13 +79,12 @@ const MarkersStyles: SymbolLayerStyle = {
 
 const CounterTextStyles: SymbolLayerStyle = {
   textField: ['to-string', ['get', 'reportsCount']],
-  textSize: 18,
-  textFont: ['Open Sans Bold', 'Arial Unicode MS Bold'],
-  textColor: '#FFFFFF',
-  textHaloColor: '#000000',
-  textHaloWidth: 2.5,
+  textSize: 12,
+  textColor: Colors.primary,
+  textHaloColor: '#fff',
+  textHaloWidth: 8,
   textHaloBlur: 0,
-  textOffset: [0, 0],
+  textOffset: [0, 2.3],
   textAllowOverlap: true,
   textIgnorePlacement: true,
   textPitchAlignment: 'map',
