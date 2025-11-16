@@ -5,17 +5,15 @@ import { StyleSheet } from 'react-native';
 
 type IProps = {
   chatId: number;
-  onJoined: () => void;
 };
 
-export const JoinChatButton = ({ chatId, onJoined }: IProps) => {
+export const JoinChatButton = ({ chatId }: IProps) => {
   const { t } = useTranslation();
   const joinChatMutation = useJoinChatMutation();
 
   const handleJoin = async () => {
     try {
       await joinChatMutation.mutateAsync({ chatId });
-      onJoined();
     } catch (error) {
       // console.error('Failed to join chat:', error);
     }

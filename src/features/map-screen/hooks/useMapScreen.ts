@@ -1,8 +1,11 @@
 import type { Marker, MarkerResponse } from "@/src/api/reports/types";
 import type { SelectedPoint } from "@/src/features/map-screen/components/CyprusOfflineMap";
-import { useState } from "react";
+import { CameraRef } from "@maplibre/maplibre-react-native";
+import { useCallback, useRef, useState } from "react";
 
 export const useMapScreen = (refetchMarkers: () => void) => {
+  const cameraRef = useRef<CameraRef>(null);
+
   const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(
     null
   );
@@ -47,7 +50,25 @@ export const useMapScreen = (refetchMarkers: () => void) => {
     setSelectedMarker(null);
   };
 
+  const handleNavigateToMarkerPress = useCallback((marker: Marker) => {
+    setSelectedPoint(null);
+    setSelectedMarker(null);
+
+    // Use setTimeout to ensure the camera ref is ready
+    setTimeout(() => {
+      cameraRef.current?.flyTo({
+        center: {
+          longitude: marker.lon,
+          latitude: marker.lat,
+        },
+        zoom: 16,
+        duration: 1000,
+      });
+    }, 100);
+  }, []);
+
   return {
+    cameraRef,
     // State
     selectedPoint,
     showReportForm,
@@ -65,5 +86,6 @@ export const useMapScreen = (refetchMarkers: () => void) => {
     handleOpenReport,
     handleMarkerPress,
     handleCloseMarkerSheet,
+    handleNavigateToMarkerPress,
   };
 };

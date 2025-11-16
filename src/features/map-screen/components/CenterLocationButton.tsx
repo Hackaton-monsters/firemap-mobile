@@ -67,9 +67,10 @@ export const CenterLocationButton = ({ onPress, bottomOffset = 0 }: IProps) => {
         onPressOut={handlePressOut}
         activeOpacity={1}
         style={styles.touchable}
+        hitSlop={10}
       >
         <View style={styles.inner}>
-          <MaterialCommunityIcons name="target" size={24} color={Colors.mapCenterOnUser}  />
+          <MaterialCommunityIcons name="target" size={24} color={Colors.mapCenterOnUser} />
         </View>
       </TouchableOpacity>
     </Animated.View>

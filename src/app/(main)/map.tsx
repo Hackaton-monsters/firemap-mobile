@@ -5,14 +5,18 @@ import { MarkerBottomSheet } from '@/src/features/marker-details/components/Mark
 import { ReportFormBottomSheet } from '@/src/features/report-creation/components/ReportFormBottomSheet';
 import { ReportSuccessNotice } from '@/src/features/report-creation/components/ReportSuccessNotice';
 import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight';
+import { useMapNavigationStore } from '@/src/shared/stores/map-navigation.store';
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 
 export default function MapScreen() {
   const tabBarHeight = useBottomTabBarHeight();
   const { data: markersData, refetch: refetchMarkers } = useMarkersQuery();
+  const { pendingMarker, setPendingMarker } = useMapNavigationStore();
 
   const {
+    cameraRef,
     selectedPoint,
     showReportForm,
     successResponse,
@@ -25,11 +29,26 @@ export default function MapScreen() {
     handleOpenReport,
     handleMarkerPress,
     handleCloseMarkerSheet,
+    handleNavigateToMarkerPress,
   } = useMapScreen(refetchMarkers);
+
+  // Handle navigation from chat screen
+  useEffect(() => {
+    if (pendingMarker) {
+      handleNavigateToMarkerPress(pendingMarker);
+      setPendingMarker(null);
+    }
+  }, [pendingMarker, handleNavigateToMarkerPress, setPendingMarker]);
+
+  // Get the updated marker from the markers query to reflect real-time changes
+  const currentMarker = selectedMarker
+    ? markersData?.markers.find((m) => m.id === selectedMarker.id) || selectedMarker
+    : null;
 
   return (
     <View style={[styles.container, { paddingBottom: tabBarHeight }]}>
       <CyprusOfflineMap
+        cameraRef={cameraRef}
         selectedPoint={selectedPoint}
         onPointSelect={setSelectedPoint}
         onAddPress={handleAddPress}
@@ -54,9 +73,10 @@ export default function MapScreen() {
       )}
       <MarkerBottomSheet
         visible={!!selectedMarker}
-        marker={selectedMarker}
+        marker={currentMarker}
         isJoined={false}
         onClose={handleCloseMarkerSheet}
+        onNavigateToMarkerPress={handleNavigateToMarkerPress}
       />
     </View>
   );

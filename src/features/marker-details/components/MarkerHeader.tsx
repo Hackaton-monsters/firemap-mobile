@@ -1,16 +1,21 @@
 import type { Marker } from '@/src/api/reports/types';
 import { Colors } from '@/src/shared/constants/colors';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 type IProps = {
   marker: Marker;
+  onNavigateToMarkerPress?: (marker: Marker) => void;
 };
 
-export const MarkerHeader = ({ marker }: IProps) => {
+export const MarkerHeader = ({ marker, onNavigateToMarkerPress }: IProps) => {
   const iconName = marker.type === 'fire' ? 'local-fire-department' : 'health-and-safety';
   const iconColor = marker.type === 'fire' ? Colors.danger : Colors.warning;
   const typeLabel = marker.type === 'fire' ? 'Fire' : 'Rescue';
+
+  const handleNavigateToMarkerPress = () => {
+    onNavigateToMarkerPress?.(marker);
+  }
 
   return (
     <View style={styles.container}>
@@ -28,6 +33,13 @@ export const MarkerHeader = ({ marker }: IProps) => {
             </Text>
           </View>
         </View>
+
+        <Pressable
+          style={styles.mapButton}
+          onPress={handleNavigateToMarkerPress}
+        >
+          <MaterialIcons name="place" size={20} color={Colors.primary} />
+        </Pressable>
       </View>
     </View>
   );
@@ -80,5 +92,13 @@ const styles = StyleSheet.create({
   reports: {
     fontSize: 13,
     color: Colors.textSecondary,
+  },
+  mapButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Colors.primary + '15',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

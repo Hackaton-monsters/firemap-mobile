@@ -60,6 +60,7 @@ export default {
     chats: {
       title: 'Chats Screen',
       noMessages: 'No messages yet',
+      noChats: 'No chats available',
       typeMessage: 'Type a message...',
       joinChat: 'Join Chat',
       translate: 'Translate',
@@ -112,6 +113,7 @@ export default {
       error: 'Error',
       cancel: 'Cancel',
       submit: 'Submit',
+      now: 'now',
     },
     report: {
       createReport: 'Create Report',

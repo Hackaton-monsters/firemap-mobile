@@ -60,6 +60,7 @@ export default {
     chats: {
       title: 'Οθόνη συνομιλιών',
       noMessages: 'Δεν υπάρχουν μηνύματα ακόμα',
+      noChats: 'Δεν υπάρχουν συνομιλίες',
       typeMessage: 'Γράψτε ένα μήνυμα...',
       joinChat: 'Συμμετοχή στη συνομιλία',
       translate: 'Μετάφραση',

@@ -11,7 +11,7 @@ import {
 } from '@maplibre/maplibre-react-native';
 import { useAssets } from 'expo-asset';
 import * as Location from 'expo-location';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -49,6 +49,7 @@ export type SelectedPoint = {
 };
 
 type IProps = {
+  cameraRef: RefObject<CameraRef | null>;
   selectedPoint: SelectedPoint | null;
   markers: Marker[] | undefined;
   selectedMarkerId: Marker['id'] | undefined;
@@ -60,6 +61,7 @@ type IProps = {
 const MIN_ZOOM_FOR_MARKER = 11;
 
 export function CyprusOfflineMap({
+  cameraRef,
   selectedPoint,
   onPointSelect,
   onAddPress,
@@ -77,7 +79,6 @@ export function CyprusOfflineMap({
   >('undetermined');
   const [isOutsideCyprus, setIsOutsideCyprus] = useState(false);
   const [currentZoom, setCurrentZoom] = useState<number>(8);
-  const cameraRef = useRef<CameraRef>(null);
   const mapRef = useRef<MapViewRef>(null);
 
   const openSettings = () => {

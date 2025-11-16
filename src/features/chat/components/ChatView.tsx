@@ -15,11 +15,9 @@ import { JoinChatButton } from './JoinChatButton';
 type IProps = {
   chatId: number;
   isJoined: boolean;
-  onJoinSuccess: () => void;
 };
 
-export const ChatView = ({ chatId, onJoinSuccess }: IProps) => {
-  const isJoined = true;
+export const ChatView = ({ chatId, isJoined }: IProps) => {
   const { t } = useTranslation();
   const currentUser = useAuthStore((state) => state.user);
   const queryClient = useQueryClient();
@@ -44,11 +42,11 @@ export const ChatView = ({ chatId, onJoinSuccess }: IProps) => {
       // Update query cache when receiving WebSocket message
       queryClient.setQueryData(['chat', chatId, 'history'], (old: any) => {
         if (!old) return old;
-        
+
         // Check if message already exists (avoid duplicates)
         const exists = old.messages.some((msg: any) => msg.id === newMessage.id);
         if (exists) return old;
-        
+
         return {
           ...old,
           messages: [...old.messages, newMessage],
@@ -83,7 +81,7 @@ export const ChatView = ({ chatId, onJoinSuccess }: IProps) => {
       {isJoined ? (
         <ChatInput chatId={chatId} />
       ) : (
-        <JoinChatButton chatId={chatId} onJoined={onJoinSuccess} />
+        <JoinChatButton chatId={chatId} />
       )}
     </View>
   );

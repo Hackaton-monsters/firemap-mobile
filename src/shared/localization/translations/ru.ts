@@ -60,6 +60,7 @@ export default {
     chats: {
       title: 'Экран чатов',
       noMessages: 'Пока нет сообщений',
+      noChats: 'Нет доступных чатов',
       typeMessage: 'Введите сообщение...',
       joinChat: 'Присоединиться к чату',
       translate: 'Перевести',

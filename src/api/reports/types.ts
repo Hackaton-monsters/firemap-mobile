@@ -13,6 +13,7 @@ export type Marker = {
   type: "fire" | "rescue";
   title: string;
   chatId: number;
+  isMember: boolean;
 };
 
 export type MarkerPayload = {

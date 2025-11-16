@@ -3,6 +3,8 @@ import { useAuthStore } from "../stores/auth.store";
 
 type MessageCallback = (message: ChatMessage) => void;
 
+const WS_SERVER_URL = "ws://5.75.233.110";
+
 class ChatWebSocketService {
   private ws: WebSocket | null = null;
   private subscribers = new Map<number, Set<MessageCallback>>();
@@ -16,7 +18,7 @@ class ChatWebSocketService {
     }
 
     this.isIntentionallyClosed = false;
-    const wsUrl = `ws://5.75.233.110/api/chat/ws?token=${token}`;
+    const wsUrl = `${WS_SERVER_URL}/ws?token=${token}`;
 
     try {
       this.ws = new WebSocket(wsUrl);
@@ -27,6 +29,8 @@ class ChatWebSocketService {
           clearTimeout(this.reconnectTimeout);
           this.reconnectTimeout = null;
         }
+        // Resubscribe to all active chats after reconnection
+        this.resubscribeAll();
       };
 
       this.ws.onmessage = (event) => {
@@ -68,10 +72,10 @@ class ChatWebSocketService {
   }
 
   private handleMessage(data: WebSocketMessage) {
-    if (data.type === "new_message" && data.message) {
-      const callbacks = this.subscribers.get(data.chatId);
+    if (data.type === "message" && data.payload) {
+      const callbacks = this.subscribers.get(data.payload.chatId);
       if (callbacks) {
-        callbacks.forEach((callback) => callback(data.message!));
+        callbacks.forEach((callback) => callback(data.payload.message));
       }
     }
   }
@@ -79,6 +83,8 @@ class ChatWebSocketService {
   subscribe(chatId: number, callback: MessageCallback) {
     if (!this.subscribers.has(chatId)) {
       this.subscribers.set(chatId, new Set());
+      // Send subscribe message to server when first subscriber for this chat
+      this.sendSubscribe(chatId);
     }
     this.subscribers.get(chatId)!.add(callback);
 
@@ -88,14 +94,49 @@ class ChatWebSocketService {
         callbacks.delete(callback);
         if (callbacks.size === 0) {
           this.subscribers.delete(chatId);
+          // Send unsubscribe message to server when no more subscribers for this chat
+          this.sendUnsubscribe(chatId);
         }
       }
     };
   }
 
+  private sendSubscribe(chatId: number) {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(
+        JSON.stringify({
+          type: "subscribe",
+          chat_id: chatId,
+        })
+      );
+      console.log(`Subscribed to chat ${chatId}`);
+    }
+  }
+
+  private sendUnsubscribe(chatId: number) {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(
+        JSON.stringify({
+          type: "unsubscribe",
+          chat_id: chatId,
+        })
+      );
+      console.log(`Unsubscribed from chat ${chatId}`);
+    }
+  }
+
+  private resubscribeAll() {
+    // Resubscribe to all chats that have active subscribers
+    this.subscribers.forEach((callbacks, chatId) => {
+      if (callbacks.size > 0) {
+        this.sendSubscribe(chatId);
+      }
+    });
+  }
+
   disconnect() {
     this.isIntentionallyClosed = true;
-    
+
     if (this.reconnectTimeout) {
       clearTimeout(this.reconnectTimeout);
       this.reconnectTimeout = null;

@@ -15,7 +15,6 @@ export function SettingsScreen() {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
-
   const handleLogout = () => {
     clearAuth();
     router.replace('/auth/login');

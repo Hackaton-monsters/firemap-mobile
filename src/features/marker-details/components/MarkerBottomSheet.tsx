@@ -3,7 +3,7 @@ import { useBottomTabBarHeight } from '@/src/shared/hooks/useBottomTabBarHeight'
 import { StyledBottomSheet } from '@/src/shared/uikit/BottomSheet/StyledBottomSheet';
 import type BottomSheet from '@gorhom/bottom-sheet';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { MarkerContent } from './MarkerContent';
 
@@ -12,17 +12,17 @@ type IProps = {
   marker: Marker | null;
   isJoined?: boolean;
   onClose: () => void;
+  onNavigateToMarkerPress?: (marker: Marker) => void;
 };
 
 
 export const MarkerBottomSheet = ({
   visible,
   marker,
-  isJoined = false,
   onClose,
+  onNavigateToMarkerPress,
 }: IProps) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [joined, setJoined] = useState(isJoined);
   const tabBarHeight = useBottomTabBarHeight();
 
   useEffect(() => {
@@ -32,10 +32,6 @@ export const MarkerBottomSheet = ({
       bottomSheetRef.current?.close();
     }
   }, [visible, marker]);
-
-  const handleJoinSuccess = () => {
-    setJoined(true);
-  };
 
   return (
     <StyledBottomSheet
@@ -48,8 +44,7 @@ export const MarkerBottomSheet = ({
         {visible && marker && (
           <MarkerContent
             marker={marker}
-            isJoined={joined}
-            onJoinSuccess={handleJoinSuccess}
+            onNavigateToMarkerPress={onNavigateToMarkerPress}
           />
         )}
       </BottomSheetView>

@@ -1,8 +1,7 @@
 import type { Marker, Report } from '@/src/api/reports/types';
 import { Colors } from '@/src/shared/constants/colors';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 const ReportCard = ({ report, markerType }: { report: Report; markerType: 'fire' | 'rescue' }) => {
   const iconName = markerType === 'fire' ? 'local-fire-department' : 'health-and-safety';
@@ -35,24 +34,20 @@ const ReportCard = ({ report, markerType }: { report: Report; markerType: 'fire'
 
 type IProps = {
   marker: Marker;
-  style?: ViewStyle
 };
 
-export const MarkerDetailsContent = ({ marker, style }: IProps) => {
+export const MarkerDetailsContent = ({ marker }: IProps) => {
   return (
-    <BottomSheetScrollView style={[styles.container, style]} showsVerticalScrollIndicator={false}>
+    <>
       {marker.reports.map((report) => (
         <ReportCard key={report.id} report={report} markerType={marker.type} />
       ))}
-    </BottomSheetScrollView>
+    </>
+
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
   header: {
     paddingVertical: 16,
   },
