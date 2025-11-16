@@ -68,21 +68,21 @@ export const ChatView = ({ chatId, isJoined }: IProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.messagesContainer}>
-        {messages.length === 0 ? (
-          <View style={styles.centered}>
-            <Text style={styles.emptyText}>{t('chats.noMessages')}</Text>
-          </View>
+      {messages.length === 0 ? (
+        <View style={styles.centered}>
+          <Text style={styles.emptyText}>{t('chats.noMessages')}</Text>
+        </View>
+      ) : (
+        <ChatMessageList messages={messages} currentUser={chatUser} chatId={chatId} />
+      )}
+
+      <View style={styles.inputContainer}>
+        {isJoined ? (
+          <ChatInput chatId={chatId} />
         ) : (
-          <ChatMessageList messages={messages} currentUser={chatUser} chatId={chatId} />
+          <JoinChatButton chatId={chatId} />
         )}
       </View>
-
-      {isJoined ? (
-        <ChatInput chatId={chatId} />
-      ) : (
-        <JoinChatButton chatId={chatId} />
-      )}
     </View>
   );
 };
@@ -91,16 +91,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  messagesContainer: {
-    flex: 1,
-  },
   centered: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: 200,
   },
   emptyText: {
     fontSize: 15,
     color: Colors.textSecondary,
+  },
+  inputContainer: {
+    backgroundColor: Colors.background,
   },
 });

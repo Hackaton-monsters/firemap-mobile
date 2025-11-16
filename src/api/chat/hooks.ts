@@ -101,10 +101,23 @@ export const useSendMessageMutation = (chatId: number) => {
           (old) => {
             if (!old) return context.previousData;
 
-            // Remove pending messages and add real message
+            // Remove pending messages
             const filteredMessages = old.messages.filter(
               (msg) => !("isPending" in msg && msg.isPending)
             );
+
+            // Check if the message already exists (e.g., from WebSocket)
+            const messageExists = filteredMessages.some(
+              (msg) => !("isPending" in msg) && msg.id === response.message.id
+            );
+
+            // Only add if it doesn't exist yet
+            if (messageExists) {
+              return {
+                ...old,
+                messages: filteredMessages,
+              };
+            }
 
             return {
               ...old,
@@ -233,5 +246,7 @@ export const useAllChatsQuery = () => {
         token,
       });
     },
+    refetchOnMount: "always",
+    refetchInterval: 10000, // Refetch every 10 seconds
   });
 };

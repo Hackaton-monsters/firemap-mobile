@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../shared/stores/auth.store";
 import { apiClient } from "../client";
 import type {
@@ -22,6 +22,7 @@ export const useMarkersQuery = () => {
 
 export const useCreateMarkerMutation = () => {
   const token = useAuthStore((state) => state.token);
+  const queryClient = useQueryClient();
 
   return useMutation<MarkerResponse, Error, MarkerPayload>({
     mutationFn: async (payload) => {
@@ -30,6 +31,12 @@ export const useCreateMarkerMutation = () => {
         body: JSON.stringify(payload),
         token,
       });
+    },
+    onSuccess: () => {
+      // Invalidate markers query
+      queryClient.invalidateQueries({ queryKey: ["markers"] });
+      // Invalidate chats query since user is auto-joined to the new chat
+      queryClient.invalidateQueries({ queryKey: ["chats", "all"] });
     },
   });
 };

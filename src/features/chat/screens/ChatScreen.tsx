@@ -9,6 +9,7 @@ import { useMapNavigationStore } from '@/src/shared/stores/map-navigation.store'
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, KeyboardProvider } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TABS = [
@@ -31,14 +32,14 @@ export function ChatDetailScreen() {
   };
 
   return (
-    <>
+    <KeyboardProvider>
       <Stack.Screen
         options={{
           headerShown: false,
           animation: 'slide_from_right',
         }}
       />
-      <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
           <Pressable style={styles.backButton} onPress={router.back}>
             <Ionicons name="arrow-back" size={24} color={Colors.textPrimary} />
@@ -52,10 +53,16 @@ export function ChatDetailScreen() {
           renderContent={(activeTab) => {
             if (activeTab === 'chat') {
               return (
-                <ChatView
-                  chatId={chatId}
-                  isJoined={true}
-                />
+                <KeyboardAvoidingView
+                  style={{ flex: 1 }}
+                  behavior="padding"
+                  keyboardVerticalOffset={0}
+                >
+                  <ChatView
+                    chatId={chatId}
+                    isJoined={true}
+                  />
+                </KeyboardAvoidingView>
               );
             }
             return (
@@ -66,7 +73,7 @@ export function ChatDetailScreen() {
           }}
         />
       </View>
-    </>
+    </KeyboardProvider>
   );
 }
 

@@ -116,12 +116,26 @@ export const ChatMessageList = ({ messages, currentUser, chatId }: IProps) => {
     <FlatList
       data={messagesWithDividers}
       renderItem={renderItem}
-      keyExtractor={(item) => 
-        item.type === 'divider' ? item.id : item.data.id?.toString() || ''
-      }
+      keyExtractor={(item, index) => {
+        if (item.type === 'divider') {
+          return `divider-${index}-${item.id}`;
+        }
+        // For messages, combine type, id, and index for guaranteed uniqueness
+        const messageId = item.data.id?.toString();
+        if (messageId) {
+          return `message-${index}-${messageId}`;
+        }
+        // For pending messages or messages without id
+        return `message-pending-${index}`;
+      }}
       inverted
       contentContainerStyle={styles.listContent}
       showsVerticalScrollIndicator={false}
+      keyboardDismissMode="interactive"
+      keyboardShouldPersistTaps="handled"
+      maintainVisibleContentPosition={{
+        minIndexForVisible: 0,
+      }}
     />
   );
 };

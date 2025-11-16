@@ -39,6 +39,9 @@ export const MarkerBottomSheet = ({
       index={-1}
       enablePanDownToClose
       onClose={onClose}
+      keyboardBehavior="interactive"
+      keyboardBlurBehavior="restore"
+      android_keyboardInputMode="adjustResize"
     >
       <BottomSheetView style={[styles.contentContainer, { paddingBottom: tabBarHeight }]}>
         {visible && marker && (
