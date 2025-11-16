@@ -37,7 +37,7 @@ export const ReportFormBottomSheet = ({
       index={-1}
       enablePanDownToClose
       onClose={onClose}
-      
+      enableDynamicSizing={false}
     >
       <BottomSheetProvider value={{ isInsideBottomSheet: true }}>
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>

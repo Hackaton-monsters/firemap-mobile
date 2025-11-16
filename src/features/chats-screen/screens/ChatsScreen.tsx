@@ -2,6 +2,7 @@ import { useAllChatsQuery } from '@/src/api/chat/hooks';
 import type { ChatListItem as ChatListItemType } from '@/src/api/chat/types';
 import { Colors } from '@/src/shared/constants/colors';
 import { serializeChatListItem } from '@/src/shared/helpers/router-params-serializer';
+import { useIsFocused } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
@@ -14,7 +15,10 @@ import { ChatListItem, ChatListSeparator, EmptyChatsState } from '../components'
 
 export const ChatsScreen = () => {
   const router = useRouter();
-  const { data, isLoading } = useAllChatsQuery();
+  const isFocused = useIsFocused();
+  const { data, isLoading } = useAllChatsQuery({
+    refetchInterval: isFocused ? 6000 : false,
+  });
   const insets = useSafeAreaInsets();
 
   const chats = data?.chats || [];

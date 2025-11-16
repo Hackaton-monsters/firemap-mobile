@@ -9,7 +9,7 @@ import type {
   PhotoUploadResponse,
 } from "./types";
 
-export const useMarkersQuery = () => {
+export const useMarkersQuery = (options?: { refetchInterval?: number | false }) => {
   const token = useAuthStore((state) => state.token);
 
   return useQuery<MarkersResponse>({
@@ -17,7 +17,7 @@ export const useMarkersQuery = () => {
     queryFn: async () => {
       return apiClient<MarkersResponse>("/marker/all", { token });
     },
-    refetchInterval: 10000, // Refetch every 10 seconds
+    refetchInterval: options?.refetchInterval,
   });
 };
 

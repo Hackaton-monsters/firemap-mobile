@@ -35,12 +35,33 @@ export const IncidentsMarkers = ({ markers, onPress }: IProps) => {
       />
       <SymbolLayer
         id="rescue"
-
         style={{
           ...MarkersStyles,
           iconImage: MARKERS_TYPES.rescue,
         }}
         filter={['==', ['literal', MARKERS_TYPES.rescue], ['get', 'type']]}
+      />
+      
+      {/* Counter text for fire markers with multiple reports */}
+      <SymbolLayer
+        id="fire-counter"
+        style={CounterTextStyles}
+        filter={[
+          'all',
+          ['==', ['literal', MARKERS_TYPES.fire], ['get', 'type']],
+          ['>', ['get', 'reportsCount'], 1]
+        ]}
+      />
+      
+      {/* Counter text for rescue markers with multiple reports */}
+      <SymbolLayer
+        id="rescue-counter"
+        style={CounterTextStyles}
+        filter={[
+          'all',
+          ['==', ['literal', MARKERS_TYPES.rescue], ['get', 'type']],
+          ['>', ['get', 'reportsCount'], 1]
+        ]}
       />
     </ShapeSource>
   );
@@ -53,5 +74,20 @@ const MarkersStyles: SymbolLayerStyle = {
   iconPitchAlignment: 'map',
   iconRotationAlignment: 'viewport',
   iconSize: 0.2,
-}
+};
+
+const CounterTextStyles: SymbolLayerStyle = {
+  textField: ['to-string', ['get', 'reportsCount']],
+  textSize: 18,
+  textFont: ['Open Sans Bold', 'Arial Unicode MS Bold'],
+  textColor: '#FFFFFF',
+  textHaloColor: '#000000',
+  textHaloWidth: 2.5,
+  textHaloBlur: 0,
+  textOffset: [0, 0],
+  textAllowOverlap: true,
+  textIgnorePlacement: true,
+  textPitchAlignment: 'map',
+  textRotationAlignment: 'viewport',
+};
 

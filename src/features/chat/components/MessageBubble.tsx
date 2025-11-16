@@ -48,6 +48,12 @@ const MessageBubble = ({ message, currentUser, chatId, position = 'single' }: IP
         <MessageBubbleAvatar nickname={message.user.nickname} avatarColor={avatarColor} />
       )}
 
+      {
+        !isCurrentUser && !showAvatar && (
+          <View style={styles.avatarStub} />
+        )
+      }
+
       <View style={styles.content}>
         {!isCurrentUser && showNickname && (
           <Text style={styles.nickname}>{message.user.nickname}</Text>
@@ -119,9 +125,11 @@ const MessageBubble = ({ message, currentUser, chatId, position = 'single' }: IP
 const getBubbleLeftStyle = (position: MessagePosition) => {
   switch (position) {
     case 'first':
-      return { borderTopLeftRadius: 14 };
+      return { borderTopLeftRadius: 12, borderBottomLeftRadius: 2 };
     case 'last':
-      return { borderBottomLeftRadius: 14 };
+      return { borderTopLeftRadius: 2, borderBottomLeftRadius: 12 };
+    case 'middle':
+      return { borderTopLeftRadius: 2, borderBottomLeftRadius: 2 };
     default:
       return {};
   }
@@ -131,9 +139,11 @@ const getBubbleLeftStyle = (position: MessagePosition) => {
 const getBubbleRightStyle = (position: MessagePosition) => {
   switch (position) {
     case 'first':
-      return { borderTopRightRadius: 14 };
+      return { borderTopRightRadius: 12, borderBottomRightRadius: 2 };
     case 'last':
-      return { borderBottomRightRadius: 14 };
+      return { borderTopRightRadius: 2, borderBottomRightRadius: 12 };
+    case 'middle':
+      return { borderTopRightRadius: 2, borderBottomRightRadius: 2 };
     default:
       return {};
   }
@@ -174,6 +184,9 @@ const styles = StyleSheet.create({
   content: {
     maxWidth: '70%',
   },
+  avatarStub: {
+    width: 48,
+  },
   bubbleWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -182,7 +195,7 @@ const styles = StyleSheet.create({
   translateButton: {
     width: 28,
     height: 28,
-    borderRadius: 14,
+    borderRadius: 12,
     backgroundColor: '#f5f5f5',
     justifyContent: 'center',
     alignItems: 'center',
@@ -195,7 +208,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -4,
   },
   translatedText: {
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 18,
     fontStyle: 'italic',
     opacity: 0.9,

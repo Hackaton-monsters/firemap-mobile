@@ -5,12 +5,16 @@ import { MarkerBottomSheet } from '@/src/features/marker-details/components/Mark
 import { ReportFormBottomSheet } from '@/src/features/report-creation/components/ReportFormBottomSheet';
 import { ReportSuccessNotice } from '@/src/features/report-creation/components/ReportSuccessNotice';
 import { useMapNavigationStore } from '@/src/shared/stores/map-navigation.store';
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 
 export default function MapScreen() {
-  const { data: markersData, refetch: refetchMarkers } = useMarkersQuery();
+  const isFocused = useIsFocused();
+  const { data: markersData, refetch: refetchMarkers } = useMarkersQuery({
+    refetchInterval: isFocused ? 3000 : false,
+  });
   const { pendingMarker, setPendingMarker } = useMapNavigationStore();
 
   const {

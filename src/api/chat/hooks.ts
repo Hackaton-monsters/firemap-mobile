@@ -236,7 +236,7 @@ export const useTranslateMessageMutation = (chatId: number) => {
   });
 };
 
-export const useAllChatsQuery = () => {
+export const useAllChatsQuery = (options?: { refetchInterval?: number | false }) => {
   const token = useAuthStore((state) => state.token);
 
   return useQuery<AllChatsResponse>({
@@ -247,6 +247,6 @@ export const useAllChatsQuery = () => {
       });
     },
     refetchOnMount: "always",
-    refetchInterval: 10000, // Refetch every 10 seconds
+    refetchInterval: options?.refetchInterval,
   });
 };
